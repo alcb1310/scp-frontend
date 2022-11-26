@@ -13,6 +13,9 @@ module.exports = {
 				secondary: '#5865f2',
 				gray: colors.neutral,
 			},
+			backgroundImage: {
+				'register': "url('/public/images/register-background.jpg')"
+			}
 		},
 	},
 	plugins: [],
