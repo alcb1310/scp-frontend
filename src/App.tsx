@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
-// import { SERVER } from '../environment';
+import { LinkButton } from './components/Buttons/LinkButton';
+import { Footer } from './components/Elements/Footer';
+
 function App() {
 	useEffect(() => {
 		document.body.classList.add('bg-gray-100');
@@ -7,43 +9,99 @@ function App() {
 
 	return (
 		<>
-			<div className='px-8 py-12'>
+			<section className='px-8'>
 				<div className='md:grid md:grid-cols-12 flex flex-col items-center md:space-x-4'>
 					<div className='md:col-span-5 order-2 mt-5 w-full'>
 						<h1 className='text-center font-bold md:text-left text-blue-800 text-2xl'>
 							Budget Control Application
 						</h1>
 						<p className='text-gray-700 mt-4'>
-							Organize each of your project's budget and make better
-							decisions
+							Organize each of your project's budget and make
+							better decisions
 						</p>
-						<a
-							className='inline-block bg-blue-800 text-white px-8 py-2 mt-3 rounded-lg hover:bg-blue-300 hover:text-gray-700 shadow-lg hover:shadow-none uppercase tracking-wider'
-							href='#'
-						>
-							Register
-						</a>
-						<a
-							className='inline-block bg-gray-300 text-blue-800 font-bold px-8 py-2 mt-3 rounded-lg hover:bg-blue-300 hover:text-gray-700 shadow-lg hover:shadow-none ml-4 uppercase tracking-wider'
-							href='#'
-						>
-							Login
-						</a>
+						<div className='space-x-2'>
+							<LinkButton
+								text='Register'
+								textColor='text-gray-100'
+								buttonColor='bg-blue-800'
+								link='#'
+							/>
+							<LinkButton
+								text='login'
+								buttonColor='bg-gray-300'
+								textColor='text-blue-800'
+								link='#'
+							/>
+						</div>
 					</div>
 					<img
-						className='md:col-span-7 w-full object-fill order-1 md:order-5 rounded-lg'
+						className='md:col-span-7 w-full object-fill order-1 md:order-5'
 						src='../../public/images/hero-image.jpg'
 						alt='Budget'
 					/>
 				</div>
-			</div>
-			<div className="bg-blue-800">
-				<div className="px-8 py-12 text-gray-200">
-					Testimonials section
+			</section>
+			<section className='bg-blue-800'>
+				<div className='px-8 py-12 text-gray-100 flex flex-wrap space-y-5'>
+					<article className='bg-blue-200 text-blue-800 py-8 px-3 text-center text-xl w-44 mx-auto rounded-xl'>
+						<p>
+							"This app gives me the information I need to make
+							better decisions"
+						</p>
+					</article>
+					<article className='bg-blue-200 text-blue-800 py-8 px-3 text-center text-xl w-44 mx-auto rounded-xl'>
+						<p>
+							"This app gives me the information I need to make
+							better decisions"
+						</p>
+					</article>
+					<article className='bg-blue-200 text-blue-800 py-8 px-3 text-center text-xl w-44 mx-auto rounded-xl'>
+						<p>
+							"This app gives me the information I need to make
+							better decisions"
+						</p>
+					</article>
 				</div>
-			</div>	
+			</section>
+			<section className='px-8 py-8'>
+				<h3 className='text-blue-800 font-bold text-lg text-center uppercase'>Pricing Options</h3>
+				<div className="px-8-py-12 flex flex-wrap space-y-5 justify-around">
+					<div className="border-blue-800 border-2 w-44 rounded-lg">
+						<h4 className='px-3 py-2'>Entry Level</h4>
+						<hr className='border-b-2 border-gray-300' />
+						<ul className='list-disc list-inside p-3 decoration-blue-800'>
+							<li>Full access</li>
+							<li>Up to 5 users</li>
+						</ul>
+						<hr className='border-b-2 border-gray-300' />
+						<h5 className='px-3 py-2 text-red-600'>$ 15 <span className='text-gray-400'>/ month</span></h5>
+					</div>
+					<div className="border-blue-800 border-2 w-44 rounded-lg">
+						<h4 className='px-3 py-2'>Mid Level</h4>
+						<hr className='border-b-2 border-gray-300' />
+						<ul className='list-disc list-inside p-3'>
+							<li>Full access</li>
+							<li>Up to 10 users</li>
+						</ul>
+						<hr className='border-b-2 border-gray-300' />
+						<h5 className='px-3 py-2 text-red-600'>$ 30 <span className='text-gray-400'>/ month</span></h5>
+					</div>
+					<div className="border-blue-800 border-2 w-44 rounded-lg">
+						<h4 className='px-3 py-2'>Corporate Level</h4>
+						<hr className='border-b-2 border-gray-300' />
+						<ul className='list-disc list-inside p-3'>
+							<li>Full access</li>
+							<li>Unlimited users</li>
+						</ul>
+						<hr className='border-b-2 border-gray-300' />
+						<h5 className='px-3 py-2 text-gray-800'>Contact us</h5>
+					</div>
+				</div>
+			</section>
+			<Footer />
 		</>
 	);
 }
 
 export default App;
+
