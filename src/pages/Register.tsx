@@ -2,7 +2,9 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postRequest } from '../api/connection';
 import { PrimaryButton } from '../components/Buttons/PrimaryButton';
+import { SecondaryButton } from '../components/Buttons/SecondaryButton';
 import { Footer } from '../components/Elements/Footer';
+import { InputElement } from '../components/Inputs/InputElement';
 import { ErrorType, RegistrationType } from '../types';
 
 const Register = () => {
@@ -50,55 +52,24 @@ const Register = () => {
 					<h3 className='font-bold text-lg mt-8'>
 						Company Information
 					</h3>
-					<label className='block mt-4 mb-2' htmlFor='ruc'>
-						RUC: <span className='text-red-600'>*</span>
-					</label>
-					<input
-						className={`block w-full px-3 py-1 rounded-md ${
-							error !== null &&
-							error.errorKey === 'ruc' &&
-							'border-red-600 border-2'
-						}`}
-						name='ruc'
-						id='ruc'
-						type='text'
-						placeholder='RUC'
-						required
+					<InputElement
+						label='RUC'
+						error={error}
+						inputName='ruc'
+						required={true}
 						onChange={handleChange}
-						value={'ruc' in registration ? registration.ruc : ''}
+						inputType='text'
 					/>
-					{error !== null && error.errorKey === 'ruc' && (
-						<p className='text-red-600 text-sm'>
-							{error.errorDescription}
-						</p>
-					)}
-					<label className='block mt-4 mb-2' htmlFor='name'>
-						Name: <span className='text-red-600'>*</span>
-					</label>
-					<input
-						className={`block w-full px-3 py-1 rounded-md ${
-							error !== null &&
-							error.errorKey === 'name' &&
-							'border-red-600 border-2'
-						}`}
-						name='name'
-						id='name'
-						type='text'
-						placeholder='Company Name'
-						required
+					<InputElement
+						label='Name'
+						error={error}
+						inputName='name'
+						required={true}
 						onChange={handleChange}
-						value={'name' in registration ? registration.name : ''}
+						inputType='text'
 					/>
-					{error !== null && error.errorKey === 'name' && (
-						<p className='text-red-600 text-sm'>
-							{error.errorDescription}
-						</p>
-					)}
 
-					<label
-						className='block mt-4 mb-2
-					'
-					>
+					<label className='block mt-4 mb-2'>
 						Choose your plan <span className='text-red-600'>*</span>
 					</label>
 					<div
@@ -141,79 +112,40 @@ const Register = () => {
 					<h3 className='font-bold text-lg mt-8'>
 						Admin User Information
 					</h3>
-					<label className='block mt-4 mb-2' htmlFor='email'>
-						Email: <span className='text-red-600'>*</span>
-					</label>
-					<input
-						className={`block w-full px-3 py-1 rounded-md ${
-							error !== null &&
-							error.errorKey === 'email' &&
-							'border-red-600 border-2'
-						}`}
-						type='email'
-						name='email'
-						id='email'
-						placeholder='Email'
-						required
+					<InputElement
+						label='Email'
+						error={error}
+						inputName='email'
+						required={true}
 						onChange={handleChange}
-						value={
-							'email' in registration ? registration.email : ''
-						}
+						inputType='email'
 					/>
-					{error !== null && error.errorKey === 'email' && (
-						<p className='text-red-600 text-sm'>
-							{error.errorDescription}
-						</p>
-					)}
-					<label className='block mt-4 mb-2' htmlFor='password'>
-						Password: <span className='text-red-600'>*</span>
-					</label>
-					<input
-						className={`block w-full px-3 py-1 rounded-md ${
-							error !== null &&
-							error.errorKey === 'password' &&
-							'border-red-600 border-2'
-						}`}
-						type='password'
-						name='password'
-						id='password'
-						placeholder='Password'
-						required
+					<InputElement
+						label='Password'
+						error={error}
+						inputName='password'
+						required={true}
 						onChange={handleChange}
-						value={
-							'password' in registration
-								? registration.password
-								: ''
-						}
+						inputType='password'
 					/>
-					{error !== null && error.errorKey === 'password' && (
-						<p className='text-red-600 text-sm'>
-							{error.errorDescription}
-						</p>
-					)}
-
-					<label className='block mt-4 mb-2' htmlFor='fullname'>
-						Full name: <span className='text-red-600'>*</span>
-					</label>
-					<input
+					<InputElement
+						label='Full name'
+						error={error}
+						inputName='fullname'
+						required={true}
 						onChange={handleChange}
-						value={
-							'fullname' in registration
-								? registration.fullname
-								: ''
-						}
-						className='block w-full px-3 py-1 rounded-md'
-						type='text'
-						name='fullname'
-						id='fullname'
-						placeholder='Full name'
-						required
+						inputType='text'
 					/>
 
 					<PrimaryButton
 						buttonType={'submit'}
 						text={'Submit'}
 						onEvent={handleSubmit}
+					/>
+					<SecondaryButton
+						buttonType='reset'
+						text='Reset'
+						onEvent={null}
 					/>
 
 					<div className='text-sm mt-2'>
