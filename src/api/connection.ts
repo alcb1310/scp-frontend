@@ -21,3 +21,16 @@ export const postRequest = async (endPoint: string, payload: any, authorization:
 
     return response
 }
+
+export const validateStatus = async (authorization: bearerToken): Promise<AxiosResponse> => {
+    const response = await axios ({
+        method: 'get',
+        baseURL: SERVER,
+        url: '/users/me',
+        headers:{
+            'Authorization': `${authorization.type} ${authorization.token}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    return response
+}

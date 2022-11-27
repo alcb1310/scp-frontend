@@ -5,7 +5,7 @@ const InputElement = (props: UserInputTypeProps) => {
 
 	return (
 		<>
-			<label className='block mt-4 mb-2' htmlFor={inputName}>
+			<label className='block mt-4 mb-2 text-indigo-700' htmlFor={inputName}>
 				{label} {required && <span className='text-red-600'>*</span>}
 			</label>
 			<input
