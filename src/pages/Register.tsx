@@ -1,15 +1,16 @@
-import { FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postRequest } from '../api/connection';
 import { PrimaryButton } from '../components/Buttons/PrimaryButton';
 import { Footer } from '../components/Elements/Footer';
+import { ErrorType, RegistrationType } from '../types';
 
 const Register = () => {
-	const [registration, setRegistration] = useState({});
-	const [error, setError] = useState(null);
+	const [registration, setRegistration] = useState<RegistrationType | {}>({});
+	const [error, setError] = useState<ErrorType | null>(null);
 	const navigate = useNavigate();
 
-	const handleChange = (event: FormEvent<HTMLInputElement>) => {
+	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
 
 		setRegistration((prevRegistration) => {
@@ -39,7 +40,7 @@ const Register = () => {
 	};
 
 	return (
-		<div className="bg-[url('/public/images/register-background-30.png')] h-screen bg-cover bg-opacity-30">
+		<div className="bg-[url('/images/register-background-30.png')] h-screen bg-cover bg-opacity-30">
 			<h1 className='text-4xl uppercase font-bold text-blue-800 text-center pt-4'>
 				Register
 			</h1>
@@ -64,7 +65,7 @@ const Register = () => {
 						placeholder='RUC'
 						required
 						onChange={handleChange}
-						value={registration.ruc}
+						value={'ruc' in registration ? registration.ruc : ''}
 					/>
 					{error !== null && error.errorKey === 'ruc' && (
 						<p className='text-red-600 text-sm'>
@@ -86,7 +87,7 @@ const Register = () => {
 						placeholder='Company Name'
 						required
 						onChange={handleChange}
-						value={registration.name}
+						value={'name' in registration ? registration.name : ''}
 					/>
 					{error !== null && error.errorKey === 'name' && (
 						<p className='text-red-600 text-sm'>
@@ -155,7 +156,9 @@ const Register = () => {
 						placeholder='Email'
 						required
 						onChange={handleChange}
-						value={registration.email}
+						value={
+							'email' in registration ? registration.email : ''
+						}
 					/>
 					{error !== null && error.errorKey === 'email' && (
 						<p className='text-red-600 text-sm'>
@@ -177,7 +180,11 @@ const Register = () => {
 						placeholder='Password'
 						required
 						onChange={handleChange}
-						value={registration.password}
+						value={
+							'password' in registration
+								? registration.password
+								: ''
+						}
 					/>
 					{error !== null && error.errorKey === 'password' && (
 						<p className='text-red-600 text-sm'>
@@ -190,7 +197,11 @@ const Register = () => {
 					</label>
 					<input
 						onChange={handleChange}
-						value={registration.fullname}
+						value={
+							'fullname' in registration
+								? registration.fullname
+								: ''
+						}
 						className='block w-full px-3 py-1 rounded-md'
 						type='text'
 						name='fullname'

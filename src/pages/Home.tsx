@@ -9,10 +9,10 @@ function Home() {
 
 	return (
 		<>
-			<section className='px-8'>
+			<section id='hero' className='px-8'>
 				<div className='md:grid md:grid-cols-12 flex flex-col items-center md:space-x-4'>
 					<div className='md:col-span-5 order-2 mt-5 w-full'>
-						<h1 className='text-center font-bold md:text-left text-blue-800 text-2xl'>
+						<h1 className='text-center font-bold md:text-left text-blue-800 text-2xl lg:text-4xl xl:text-6xl'>
 							Budget Control Application
 						</h1>
 						<p className='text-gray-700 mt-4'>
