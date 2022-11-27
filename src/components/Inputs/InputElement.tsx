@@ -15,7 +15,7 @@ const InputElement = (props: UserInputTypeProps) => {
 				required={required}
 				placeholder={label}
 				type={inputType}
-				className={`block w-full px-3 py-1 rounded-md shadow-md ${
+				className={`block rounded-md w-full text-indigo-700 focus:border-indigo-700 focus:ring-indigo-700 ${
 					error !== null &&
 					error.errorKey === inputName &&
 					'border-red-600 border-2'

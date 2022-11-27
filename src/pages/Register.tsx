@@ -43,12 +43,12 @@ const Register = () => {
 
 	return (
 		<div className="bg-[url('/images/register-background-30.png')] h-screen bg-cover bg-opacity-30">
-			<h1 className='text-4xl uppercase font-bold text-blue-800 text-center pt-4'>
+			<h1 className='text-4xl uppercase font-bold text-indigo-800 text-center pt-4'>
 				Register
 			</h1>
 
 			<div className='container w-1/3 mx-auto mt-5 mb-5'>
-				<form className='text-blue-700' onSubmit={handleSubmit}>
+				<form className='text-indigo-600' onSubmit={handleSubmit}>
 					<h3 className='font-bold text-lg mt-8'>
 						Company Information
 					</h3>
