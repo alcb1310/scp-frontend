@@ -5,6 +5,7 @@ import { NavBar } from './components/Elements/NavBar';
 import { AppEntry } from './pages/AppEntry';
 import { Home } from './pages/Home';
 import { Login } from './pages/Login';
+import { Parameters } from './pages/Parameters';
 import { Register } from './pages/Register';
 import { UsersMain } from './pages/UsersMain';
 
@@ -23,6 +24,30 @@ function App() {
 								<>
 									<NavBar />
 									<AppEntry />
+									<Footer />
+								</>
+							</PrivateRoute>
+						}
+					/>
+					<Route
+						path='/users'
+						element = {
+							<PrivateRoute>
+								<>
+									<NavBar />
+									<UsersMain />
+									<Footer />
+								</>
+							</PrivateRoute>
+						}
+					/>
+					<Route
+						path='/parameters'
+						element = {
+							<PrivateRoute>
+								<>
+									<NavBar />
+									<Parameters />
 									<Footer />
 								</>
 							</PrivateRoute>
