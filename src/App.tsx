@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { PrivateRoute } from './auth/PrivateRoute';
+import { Footer } from './components/Elements/Footer';
+import { NavBar } from './components/NavBar';
 import { AppEntry } from './pages/AppEntry';
 import { Home } from './pages/Home';
 import { Login } from './pages/Login';
@@ -17,7 +19,11 @@ function App() {
 						path='/app'
 						element={
 							<PrivateRoute>
-								<AppEntry />
+								<>
+									<NavBar />
+									<AppEntry />
+									<Footer />
+								</>
 							</PrivateRoute>
 						}
 					/>
