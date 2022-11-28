@@ -1,11 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 const NavBar = () => {
 	return (
 		<>
 			<nav className='flex bg-indigo-600 py-4 px-5 justify-between items-center'>
 				<div className='flex items-center'>
-					<div className='mr-6 text-indigo-200 h-10 w-20 bg-indigo-200 rounded-full'></div>
+					<Link to={'/app'}>
+						<div className='mr-6 text-indigo-200 h-10 w-20 bg-indigo-200 rounded-full'></div>
+					</Link>
 					<ul className='flex'>
 						<li className='mr-6'>
 							<Link
@@ -33,7 +35,7 @@ const NavBar = () => {
 						</li>
 						<li className='mr-6'>
 							<Link
-								to='#'
+								to='/users'
 								className='text-indigo-200 hover:text-indigo-50'
 							>
 								Users
@@ -41,7 +43,9 @@ const NavBar = () => {
 						</li>
 					</ul>
 				</div>
-                <Link to="#" className="text-indigo-200 hover:text-indigo-50">Logout</Link>
+				<Link to='#' className='text-indigo-200 hover:text-indigo-50'>
+					Logout
+				</Link>
 			</nav>
 		</>
 	);

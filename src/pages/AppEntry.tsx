@@ -1,7 +1,8 @@
 import { useSelector } from 'react-redux';
+import { StoreDataType } from '../types';
 
 const AppEntry = () => {
-	const storeData = useSelector((state: any) => state);
+	const storeData: StoreDataType = useSelector((state: StoreDataType) => state);
 
 	return (
 		<div className='container px-5 py-5'>

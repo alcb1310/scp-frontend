@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { PrivateRoute } from './auth/PrivateRoute';
 import { Footer } from './components/Elements/Footer';
-import { NavBar } from './components/NavBar';
+import { NavBar } from './components/Elements/NavBar';
 import { AppEntry } from './pages/AppEntry';
 import { Home } from './pages/Home';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
+import { UsersMain } from './pages/UsersMain';
 
 function App() {
 	return (
@@ -22,6 +23,18 @@ function App() {
 								<>
 									<NavBar />
 									<AppEntry />
+									<Footer />
+								</>
+							</PrivateRoute>
+						}
+					/>
+					<Route
+						path='/users'
+						element = {
+							<PrivateRoute>
+								<>
+									<NavBar />
+									<UsersMain />
 									<Footer />
 								</>
 							</PrivateRoute>

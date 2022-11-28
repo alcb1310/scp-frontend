@@ -12,7 +12,6 @@ const reducerFn = (state = {}, action: any) => {
         case 'login/status':
             return {...state, status: action.payload}
         case 'users/SetCurrentUser':
-            console.log(action.payload);
             return {...state, ...action.payload, status: true}
         case 'LOGOUT':
             return {}
