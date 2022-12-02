@@ -1,7 +1,7 @@
 import { UserInputTypeProps } from '../../types';
 
 const InputElement = (props: UserInputTypeProps) => {
-	const { label, error, inputName, required, inputType, onChange } = props;
+	const { label, error, inputName, required, inputType, value, onChange } = props;
 
 	return (
 		<>
@@ -20,6 +20,7 @@ const InputElement = (props: UserInputTypeProps) => {
 					error.errorKey === inputName &&
 					'border-red-600 border-2'
 				}`}
+				value={value}
 			/>
 			{error !== null && error.errorKey === inputName && (
 				<p className='text-red-600 text-sm'>{error.errorDescription}</p>

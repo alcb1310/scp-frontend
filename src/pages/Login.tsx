@@ -63,8 +63,9 @@ const Login = () => {
 							inputName='email'
 							required={true}
 							onChange={handleChange}
+							value = {('email' in loginInfo) ? loginInfo.email : ''}
 						/>
-                        <InputElement label='Password' error={error} inputType='password' inputName='password' required={true} onChange={handleChange} />
+                        <InputElement label='Password' error={error} inputType='password' inputName='password' required={true} onChange={handleChange} value={('password' in loginInfo) ? loginInfo.password : ''} />
 
 						<PrimaryButton
 							buttonType='submit'
