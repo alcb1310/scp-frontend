@@ -6,6 +6,8 @@ import {
 	userInputType as UserInputType,
 } from './InputTypeProps';
 import { storeDataType as StoreDataType } from './StoreDataType';
+import { displayStatus as DisplayStatusType } from './displayStatus';
+import { getSuppliersType as GetSuppliersType } from './getSuppliersType';
 
 export type {
 	ButtonProps,
@@ -13,5 +15,7 @@ export type {
 	RegistrationType,
 	UserInputTypeProps,
 	UserInputType,
-	StoreDataType
+	StoreDataType,
+	DisplayStatusType,
+	GetSuppliersType,
 };

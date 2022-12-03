@@ -1,15 +1,15 @@
 import { ChangeEventHandler } from 'react';
-import { errorType } from '../../types/ErrorType';
-import { InputElement } from '../Inputs/InputElement';
-import { getSuppliersType } from '../Parameters/Supplier';
+import { ErrorType } from '../../types';
+import { InputElement } from '../../components/Inputs/InputElement';
+import { GetSuppliersType } from '../../types';
 
 export const SupplierForm = ({
 	supplier,
 	error,
 	handleChange,
 }: {
-	supplier: getSuppliersType | {} | null;
-	error: errorType | null;
+	supplier: GetSuppliersType | {} | null;
+	error: ErrorType | null;
 	handleChange: ChangeEventHandler<HTMLInputElement> | undefined;
 }) => {
 	return (
