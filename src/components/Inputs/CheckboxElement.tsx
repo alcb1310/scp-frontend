@@ -1,4 +1,4 @@
-const ChexboxElement = ({
+const CheckboxElement = ({
 	name,
 	label,
 	required,
@@ -28,4 +28,4 @@ const ChexboxElement = ({
 	);
 };
 
-export { ChexboxElement };
+export { CheckboxElement };

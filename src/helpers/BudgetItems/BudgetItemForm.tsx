@@ -2,7 +2,7 @@ import { ErrorType } from '../../types';
 import {
 	InputElement,
 	SelectElement,
-	ChexboxElement,
+	CheckboxElement,
 } from '../../components/Inputs';
 
 export const BudgetItemForm = ({
@@ -53,7 +53,7 @@ export const BudgetItemForm = ({
 				onChange={handleChange}
 				value={budgetItem.level}
 			/>
-			<ChexboxElement
+			<CheckboxElement
 				name={'accumulates'}
 				label={'Accumulates'}
 				required={false}
