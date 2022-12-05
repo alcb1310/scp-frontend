@@ -7,6 +7,7 @@ import { Home } from './pages/Home';
 import { Login } from './pages/Login';
 import { Parameters } from './pages/Parameters';
 import { Register } from './pages/Register';
+import { Transactions } from './pages/Transactions';
 import { UsersMain } from './pages/UsersMain';
 
 function App() {
@@ -31,7 +32,7 @@ function App() {
 					/>
 					<Route
 						path='/users'
-						element = {
+						element={
 							<PrivateRoute>
 								<>
 									<NavBar />
@@ -43,7 +44,7 @@ function App() {
 					/>
 					<Route
 						path='/parameters'
-						element = {
+						element={
 							<PrivateRoute>
 								<>
 									<NavBar />
@@ -55,11 +56,23 @@ function App() {
 					/>
 					<Route
 						path='/users'
-						element = {
+						element={
 							<PrivateRoute>
 								<>
 									<NavBar />
 									<UsersMain />
+									<Footer />
+								</>
+							</PrivateRoute>
+						}
+					/>
+					<Route
+						path='/transactions'
+						element={
+							<PrivateRoute>
+								<>
+									<NavBar />
+									<Transactions />
 									<Footer />
 								</>
 							</PrivateRoute>

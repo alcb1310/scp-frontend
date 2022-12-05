@@ -11,7 +11,7 @@ const NavBar = () => {
 					<ul className='flex'>
 						<li className='mr-6'>
 							<Link
-								to='#'
+								to='/transactions'
 								className='text-indigo-200 hover:text-indigo-50'
 							>
 								Transactions
