@@ -2,7 +2,7 @@ import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getRequest, postRequest } from '../../api/connection';
+import { getRequest, postRequest, putRequest } from '../../api/connection';
 import { ProjectForm } from '../../helpers/Project';
 import { DisplayStatusType, ErrorType, StoreDataType } from '../../types';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
@@ -17,6 +17,9 @@ export type projectType = {
 const Project = () => {
 	const [projects, setProjects] = useState<projectType[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [selectedProject, setSelectedProject] = useState<projectType | null>(
+		null
+	);
 	const [infoToDisplay, setInfoToDisplay] =
 		useState<DisplayStatusType>('home');
 	const storeData: StoreDataType = useSelector(
@@ -48,14 +51,31 @@ const Project = () => {
 		setInfoToDisplay('home');
 	};
 
+	const editProject = async (projectUuid: string) => {
+		setIsLoading(true);
+		const project = await getRequest('/projects', projectUuid, {
+			token: storeData.token,
+			type: storeData.type,
+		});
+		setSelectedProject(project.data.detail);
+        setInfoToDisplay('edit')
+		setIsLoading(false);
+	};
+
 	const displayValue = isLoading ? (
 		<Loading />
 	) : infoToDisplay === 'home' ? (
-		<ProjectHomeData projects={projects} addProject={addProject} />
+		<ProjectHomeData
+			projects={projects}
+			addProject={addProject}
+			editProject={editProject}
+		/>
 	) : infoToDisplay === 'add' ? (
 		<ProjectAddData saveProject={saveProject} />
+	) : selectedProject ? (
+		<ProjectEditData saveProject={saveProject} project={selectedProject} />
 	) : (
-		''
+		'Unable to find project'
 	);
 
 	return <div className='w-full'>{displayValue}</div>;
@@ -66,13 +86,21 @@ export { Project };
 const ProjectHomeData = ({
 	projects,
 	addProject,
+	editProject,
 }: {
 	projects: projectType[];
 	addProject: any;
+	editProject: any;
 }) => {
 	const projectsInfo = projects.map((project) => {
 		return (
-			<tr className='hover:bg-indigo-100' key={project.uuid}>
+			<tr
+				className='hover:bg-indigo-100'
+				key={project.uuid}
+				onClick={() => {
+					editProject(project.uuid);
+				}}
+			>
 				<td className='border-x-2 p-3'>{project.name}</td>
 				<td className='border-x-2 p-3 text-center'>
 					<FontAwesomeIcon
@@ -154,6 +182,73 @@ const ProjectAddData = ({ saveProject }: { saveProject: any }) => {
 				error={error}
 				onChange={handleChange}
 				project={project}
+			/>
+			<PrimaryButton
+				buttonType={'submit'}
+				text={'Submit'}
+				onEvent={handleSubmit}
+			/>
+		</form>
+	);
+};
+
+const ProjectEditData = ({
+	saveProject,
+	project,
+}: {
+	saveProject: any;
+	project: projectType;
+}) => {
+	const [projectToEdit, setProjectToEdit] = useState<projectType>(project);
+	const [error, setError] = useState<ErrorType | null>(null);
+	const storeData: StoreDataType = useSelector(
+		(state: StoreDataType) => state
+	);
+
+	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		try {
+			projectToEdit.uuid !== undefined &&
+				(await putRequest(
+					'/projects',
+					projectToEdit.uuid,
+					projectToEdit,
+					{
+						token: storeData.token,
+						type: storeData.type,
+					}
+				));
+			saveProject();
+		} catch (err: any) {
+			if (err.response.status === 409)
+				setError({
+					errorKey: 'name',
+					errorDescription: err.response.data.detail,
+				});
+			else setError(err.response.data.detail);
+			console.error(err);
+		}
+	};
+
+	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const { name, value, checked } = event.target;
+
+		setError(null);
+
+		const changeValue = name === 'is_active' ? checked : value;
+		setProjectToEdit((prevProject) => ({
+			...prevProject,
+			[name]: changeValue,
+		}));
+	};
+
+	return (
+		<form onSubmit={handleSubmit}>
+			<ProjectForm
+				error={error}
+				onChange={handleChange}
+				project={projectToEdit}
 			/>
 			<PrimaryButton
 				buttonType={'submit'}
