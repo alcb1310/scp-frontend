@@ -1,6 +1,6 @@
 import { ErrorType } from '../../types';
 import { CheckboxElement, InputElement } from '../../components/Inputs';
-import { projectType } from '../../components/Parameters/Project';
+import { ProjectType } from '../../types';
 
 const ProjectForm = ({
 	error,
@@ -9,7 +9,7 @@ const ProjectForm = ({
 }: {
 	error: ErrorType | null;
 	onChange: any;
-	project: projectType | null;
+	project: ProjectType | null;
 }) => {
 	return (
 		<>
@@ -33,4 +33,4 @@ const ProjectForm = ({
 	);
 };
 
-export { ProjectForm}
+export { ProjectForm };

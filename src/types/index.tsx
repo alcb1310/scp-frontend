@@ -8,7 +8,11 @@ import {
 import { storeDataType as StoreDataType } from './StoreDataType';
 import { displayStatus as DisplayStatusType } from './displayStatus';
 import { getSuppliersType as GetSuppliersType } from './getSuppliersType';
-import { budgetItemType as BudgetItemType, createBudgetItemType as CreateBudgetItemType } from './budgetItemType';
+import {
+	budgetItemType as BudgetItemType,
+	createBudgetItemType as CreateBudgetItemType,
+} from './budgetItemType';
+import { projectType as ProjectType } from './projectType';
 
 export type {
 	ButtonProps,
@@ -20,5 +24,6 @@ export type {
 	DisplayStatusType,
 	GetSuppliersType,
 	BudgetItemType,
-	CreateBudgetItemType
+	CreateBudgetItemType,
+	ProjectType,
 };
