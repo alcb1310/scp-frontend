@@ -11,7 +11,9 @@ export const BudgetItemAddData = ({
 	saveBudgetItem: any;
 }) => {
 	const [error, setError] = useState<ErrorType | null>(null);
-	const [budgetItem, setBudgetItem] = useState<CreateBudgetItemType | {}>({});
+	const [budgetItem, setBudgetItem] = useState<CreateBudgetItemType | {}>({
+		accumulates: false,
+	});
 	const [parent, setParent] = useState([]);
 	const storeData: StoreDataType = useSelector(
 		(state: StoreDataType) => state
@@ -32,7 +34,6 @@ export const BudgetItemAddData = ({
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		console.log(budgetItem);
 		try {
 			await postRequest('/budget-items', budgetItem, {
 				token: storeData.token,
