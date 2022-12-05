@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getRequest } from '../api/connection';
 import { PrimaryButton } from '../components/Buttons/PrimaryButton';
+import { Loading } from '../components/Elements/Loading';
 import { ChangePassword } from '../components/Users/ChangePassword';
 import { CreateUser } from '../components/Users/CreateUser';
 
@@ -22,14 +23,16 @@ type getUserType = {
 const UsersMain = () => {
 	const [activePage, setActivePage] = useState<userActivePageType>(null);
 	const [users, setUsers] = useState<getUserType[]>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const storeData = useSelector((state: any) => state);
 
 	const getAllUsers = async (): Promise<AxiosResponse> => {
+		setIsLoading(true);
 		const users: AxiosResponse = await getRequest('/users', null, {
 			token: storeData.token,
 			type: storeData.type,
 		});
-
+		setIsLoading(false);
 		return users;
 	};
 
@@ -42,8 +45,8 @@ const UsersMain = () => {
 	const handleSuccess = async () => {
 		setActivePage(null);
 
-		const userResponse = await getAllUsers()
-		setUsers(userResponse.data.detail)
+		const userResponse = await getAllUsers();
+		setUsers(userResponse.data.detail);
 	};
 
 	const usersEl = users.map((user: getUserType) => {
@@ -55,24 +58,25 @@ const UsersMain = () => {
 		);
 	});
 
-	const showPage =
-		activePage === 'reset' ? (
-			<ChangePassword />
-		) : activePage === 'create' ? (
-			<CreateUser successEvent={handleSuccess} />
-		) : (
-			<div className='w-full'>
-				<table className='mt-4 mx-auto'>
-					<thead className='border-b-2 border-black font-bold bg-indigo-200'>
-						<tr>
-							<td className='text-center w-4/12 p-3'>Email</td>
-							<td className='text-center w-4/12 p-3'>Name</td>
-						</tr>
-					</thead>
-					<tbody className='border-b-2'>{usersEl}</tbody>
-				</table>
-			</div>
-		);
+	const showPage = isLoading ? (
+		<Loading />
+	) : activePage === 'reset' ? (
+		<ChangePassword />
+	) : activePage === 'create' ? (
+		<CreateUser successEvent={handleSuccess} />
+	) : (
+		<div className='w-full'>
+			<table className='mt-4 mx-auto'>
+				<thead className='border-b-2 border-black font-bold bg-indigo-200'>
+					<tr>
+						<td className='text-center w-4/12 p-3'>Email</td>
+						<td className='text-center w-4/12 p-3'>Name</td>
+					</tr>
+				</thead>
+				<tbody className='border-b-2'>{usersEl}</tbody>
+			</table>
+		</div>
+	);
 
 	return (
 		<section className='grid grid-cols-12 text-indigo-800 px-5 min-h-96 space-x-6 mb-5'>

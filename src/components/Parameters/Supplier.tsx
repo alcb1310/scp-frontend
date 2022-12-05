@@ -15,6 +15,7 @@ import {
 const Supplier = () => {
 	const [suppliers, setSuppliers] = useState<GetSuppliersType[]>([]);
 	const [supplierUuid, setSupplierUuid] = useState<string>('');
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const storeData: StoreDataType = useSelector(
 		(state: StoreDataType) => state
 	);
@@ -23,12 +24,14 @@ const Supplier = () => {
 		useState<DisplayStatusType>('home');
 
 	const fetchData = async () => {
+		setIsLoading(true);
 		const data = await getRequest('/suppliers', null, {
 			token: storeData.token,
 			type: storeData.type,
 		});
 
 		setSuppliers(data.data.detail);
+		setIsLoading(false);
 	};
 
 	useEffect(() => {

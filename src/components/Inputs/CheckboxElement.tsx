@@ -15,7 +15,7 @@ const ChexboxElement = ({
 		<div className='flex items-center my-4'>
 			<input
 				type='checkbox'
-				className='w-4 h-4 text-indigo-600 bg-gray-100 rounder border-gray-300 focus:ring-indigo-600 focus:ring-2'
+				className='w-4 h-4 text-indigo-600 bg-gray-100 rounder border-gray-300 focus:ring-indigo-600 focus:ring-2 mr-2'
 				id={name}
 				name={name}
 				checked={checked}
