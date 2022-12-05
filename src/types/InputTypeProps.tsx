@@ -1,7 +1,7 @@
 import { ChangeEventHandler } from 'react';
 import { ErrorType } from '.';
 
-export type userInputType = 'text' | 'password' | 'email';
+export type userInputType = 'text' | 'password' | 'email' | 'number';
 export type userInputTypeProps = {
 	label: string;
 	error: ErrorType | null;
