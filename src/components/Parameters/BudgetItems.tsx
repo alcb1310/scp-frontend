@@ -1,13 +1,12 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getRequest, postRequest } from '../../api/connection';
+import { getRequest, postRequest, putRequest } from '../../api/connection';
 import { DisplayStatusType, ErrorType, StoreDataType } from '../../types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
-import { InputElement } from '../Inputs/InputElement';
-import { SelectElement } from '../Inputs/SelectElement';
-import { ChexboxElement } from '../Inputs/CheckboxElement';
+import { BudgetItemForm } from '../../helpers/BudgetItems';
+import { Loading } from '../Elements/Loading';
 
 type budgetItemType = {
 	uuid: string;
@@ -36,26 +35,42 @@ type createBudgetItemType = {
 
 const BudgetItems = () => {
 	const [budgetItems, setBudgetItems] = useState<budgetItemType[]>([]);
+	const [selectedBudgetItem, setSelectedBudgetItem] = useState<
+		budgetItemType | {}
+	>({});
 	const storeData: StoreDataType = useSelector(
 		(state: StoreDataType) => state
 	);
 	const [infoToDisplay, setInfoToDisplay] =
 		useState<DisplayStatusType>('home');
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const fetchData = async () => {
+		setIsLoading(true);
 		const budgetData = await getRequest('/budget-items', null, {
 			token: storeData.token,
 			type: storeData.type,
 		});
 
 		setBudgetItems(budgetData.data.detail);
+		setIsLoading(false);
 	};
 
 	const addBudgetItem = () => {
 		setInfoToDisplay('add');
 	};
 
-	const editBudgetItem = () => {
+	const editBudgetItem = async (budgetItemUuid: string) => {
+		setIsLoading(true);
+		const selectedBudgetItemResponse = await getRequest(
+			'/budget-items',
+			budgetItemUuid,
+			{ token: storeData.token, type: storeData.type }
+		);
+
+		setIsLoading(false);
+		setSelectedBudgetItem(selectedBudgetItemResponse.data.detail);
+
 		setInfoToDisplay('edit');
 	};
 
@@ -68,17 +83,24 @@ const BudgetItems = () => {
 		fetchData().catch((err) => console.error(err));
 	}, []);
 
-	const info =
-		infoToDisplay === 'home' ? (
-			<BudgetHomeData
-				budgetItems={budgetItems}
-				addBudgetItem={addBudgetItem}
-			/>
-		) : infoToDisplay === 'add' ? (
-			<BudgetItemAddData saveBudgetItem={saveBudgetItem} />
-		) : (
-			''
-		);
+	const info = isLoading ? (
+		<Loading />
+	) : infoToDisplay === 'home' ? (
+		<BudgetHomeData
+			budgetItems={budgetItems}
+			addBudgetItem={addBudgetItem}
+			editBudgetItem={editBudgetItem}
+		/>
+	) : infoToDisplay === 'add' ? (
+		<BudgetItemAddData saveBudgetItem={saveBudgetItem} />
+	) : 'uuid' in selectedBudgetItem ? (
+		<BudgetItemEditData
+			saveBudgetItem={saveBudgetItem}
+			budgetItem={selectedBudgetItem}
+		/>
+	) : (
+		'Unable to find budget item'
+	);
 
 	return (
 		<>
@@ -92,13 +114,21 @@ export { BudgetItems };
 const BudgetHomeData = ({
 	budgetItems,
 	addBudgetItem,
+	editBudgetItem,
 }: {
 	budgetItems: budgetItemType[];
 	addBudgetItem: any;
+	editBudgetItem: any;
 }) => {
 	const budgetItemsData = budgetItems.map((budgetItem) => {
 		return (
-			<tr className='hover:bg-indigo-100' key={budgetItem.uuid}>
+			<tr
+				className='hover:bg-indigo-100'
+				key={budgetItem.uuid}
+				onClick={() => {
+					editBudgetItem(budgetItem.uuid);
+				}}
+			>
 				<td className='border-x-2 p-3'>{budgetItem.code}</td>
 				<td className='border-x-2 p-3'>{budgetItem.name}</td>
 				<td className='border-x-2 p-3'>{budgetItem.level}</td>
@@ -176,13 +206,13 @@ const BudgetItemAddData = ({ saveBudgetItem }: { saveBudgetItem: any }) => {
 
 			saveBudgetItem();
 		} catch (err: any) {
-			console.log(err);
 			if (err.response.status === 409)
 				setError({
 					errorKey: 'code',
 					errorDescription: err.response.data.detail,
 				});
 			else setError(err.response.data.detail);
+			console.error(err);
 		}
 	};
 
@@ -225,71 +255,104 @@ const BudgetItemAddData = ({ saveBudgetItem }: { saveBudgetItem: any }) => {
 	);
 };
 
-const BudgetItemForm = ({
-	error,
-	handleChange,
+const BudgetItemEditData = ({
+	saveBudgetItem,
 	budgetItem,
-	parents,
 }: {
-	error: ErrorType | null;
-	handleChange: any;
-	budgetItem: any;
-	parents: any[];
+	saveBudgetItem: any;
+	budgetItem: budgetItemType;
 }) => {
-	const options = parents.map((parent) => {
-		return (
-			<option key={parent.uuid} value={parent.uuid}>
-				{parent.name}
-			</option>
-		);
-	});
+	const [budgetItemToEdit, setBudgetItemToEdit] = useState<
+		createBudgetItemType | {}
+	>({});
+	const [error, setError] = useState<ErrorType | null>(null);
+	const [parent, setParent] = useState([]);
+	const storeData: StoreDataType = useSelector(
+		(state: StoreDataType) => state
+	);
+
+	const fetchData = async () => {
+		const data = await getRequest('/budget-items', null, {
+			token: storeData.token,
+			type: storeData.type,
+		});
+
+		setParent(data.data.detail);
+	};
+
+	useEffect(() => {
+		setBudgetItemToEdit(() => {
+			return {
+				uuid: budgetItem.uuid,
+				code: budgetItem.code,
+				name: budgetItem.name,
+				level: budgetItem.level,
+				accumulates: budgetItem.accumulates,
+				parentUuid:
+					budgetItem.parent && 'uuid' in budgetItem.parent
+						? budgetItem.parent.uuid
+						: null,
+			};
+		});
+		fetchData().catch((err) => console.error(err));
+	}, []);
+
+	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const { name, value, checked } = event.target;
+
+		setError(null);
+
+		const changeValue =
+			name === 'accumulates'
+				? checked
+				: name === 'level'
+				? parseInt(value)
+					? parseInt(value)
+					: 0
+				: value;
+
+		setBudgetItemToEdit((prevBudgetItemToEdit) => ({
+			...prevBudgetItemToEdit,
+			[name]: changeValue,
+		}));
+	};
+
+	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		try {
+			'uuid' in budgetItemToEdit &&
+				(await putRequest(
+					'/budget-items',
+					budgetItemToEdit.uuid,
+					budgetItemToEdit,
+					{ token: storeData.token, type: storeData.type }
+				));
+			saveBudgetItem();
+		} catch (err: any) {
+			if (err.response.status === 409)
+				setError({
+					errorKey: 'code',
+					errorDescription: err.response.data.detail,
+				});
+			else setError(err.response.data.detail);
+			console.error(err);
+		}
+	};
 
 	return (
-		<>
-			<InputElement
-				label={'Code'}
+		<form onSubmit={handleSubmit}>
+			<BudgetItemForm
 				error={error}
-				inputName={'code'}
-				required={true}
-				inputType={'text'}
-				onChange={handleChange}
-				value={budgetItem.code}
+				handleChange={handleChange}
+				budgetItem={budgetItemToEdit}
+				parents={parent}
 			/>
-			<InputElement
-				label={'Name'}
-				error={error}
-				inputName={'name'}
-				required={true}
-				inputType={'text'}
-				onChange={handleChange}
-				value={budgetItem.name}
+			<PrimaryButton
+				buttonType={'submit'}
+				text={'Submit'}
+				onEvent={handleSubmit}
 			/>
-			<InputElement
-				label={'Level'}
-				error={error}
-				inputName={'level'}
-				required={true}
-				inputType={'number'}
-				onChange={handleChange}
-				value={budgetItem.level}
-			/>
-			<ChexboxElement
-				name={'accumulates'}
-				label={'Accumulates'}
-				required={true}
-				checked={budgetItem.accumulates}
-				onChange={handleChange}
-			/>
-			<SelectElement
-				label={'Parent'}
-				error={error}
-				inputName={'parentUuid'}
-				required={true}
-				value={budgetItem.parentUuid}
-				onChange={handleChange}
-			>
-				{options}
-			</SelectElement>
-		</>
+		</form>
 	);
 };
