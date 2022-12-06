@@ -1,6 +1,6 @@
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
+import { AddButton } from '../../components/Buttons/AddButton';
 import { ProjectType } from '../../types';
 
 export const ProjectHomeData = ({
@@ -37,7 +37,7 @@ export const ProjectHomeData = ({
 				<div className='flex justify-between items-center'>
 					<p>Projects</p>
 					<div className='text-base'>
-						<PrimaryButton
+						<AddButton
 							buttonType={'button'}
 							text={'Add'}
 							onEvent={addProject}

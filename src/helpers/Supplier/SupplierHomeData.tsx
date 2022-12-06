@@ -1,4 +1,4 @@
-import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
+import { AddButton } from '../../components/Buttons/AddButton';
 import { GetSuppliersType } from '../../types';
 
 export const SupplierHomeData = (props: {
@@ -32,7 +32,7 @@ export const SupplierHomeData = (props: {
 				<div className='flex justify-between items-center'>
 					<p>Suppliers</p>
 					<div className='text-base'>
-						<PrimaryButton
+						<AddButton
 							buttonType={'button'}
 							text={'Add'}
 							onEvent={addSupplier}

@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
+import { AddButton } from '../../components/Buttons/AddButton';
 import { BudgetItemType } from '../../types';
 
-export const BudgetHomeData = ({
+export const BudgetItemHomeData = ({
 	budgetItems,
 	addBudgetItem,
 	editBudgetItem,
@@ -43,7 +43,7 @@ export const BudgetHomeData = ({
 					<div className='flex justify-between items-center'>
 						<p>Budget Items</p>
 						<div className='text-base'>
-							<PrimaryButton
+							<AddButton
 								buttonType={'button'}
 								text={'Add'}
 								onEvent={addBudgetItem}

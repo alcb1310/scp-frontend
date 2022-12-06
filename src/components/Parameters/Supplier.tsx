@@ -11,6 +11,7 @@ import {
 	SupplierEditData,
 	SupplierHomeData,
 } from '../../helpers/Supplier';
+import { Loading } from '../Elements/Loading';
 
 const Supplier = () => {
 	const [suppliers, setSuppliers] = useState<GetSuppliersType[]>([]);
@@ -52,21 +53,22 @@ const Supplier = () => {
 		setInfoToDisplay('edit');
 	};
 
-	const info =
-		infoToDisplay === 'home' ? (
-			<SupplierHomeData
-				suppliers={suppliers}
-				addSupplier={addSupplier}
-				editSupplier={editSupplier}
-			/>
-		) : infoToDisplay === 'add' ? (
-			<SupplierAddData saveSupplier={saveSupplier} />
-		) : (
-			<SupplierEditData
-				saveSupplier={saveSupplier}
-				supplierUuid={supplierUuid}
-			/>
-		);
+	const info = isLoading ? (
+		<Loading />
+	) : infoToDisplay === 'home' ? (
+		<SupplierHomeData
+			suppliers={suppliers}
+			addSupplier={addSupplier}
+			editSupplier={editSupplier}
+		/>
+	) : infoToDisplay === 'add' ? (
+		<SupplierAddData saveSupplier={saveSupplier} />
+	) : (
+		<SupplierEditData
+			saveSupplier={saveSupplier}
+			supplierUuid={supplierUuid}
+		/>
+	);
 
 	return (
 		<>

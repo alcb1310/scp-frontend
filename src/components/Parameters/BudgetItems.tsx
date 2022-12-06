@@ -5,7 +5,7 @@ import { DisplayStatusType, StoreDataType } from '../../types';
 import {
 	BudgetItemEditData,
 	BudgetItemAddData,
-	BudgetHomeData,
+	BudgetItemHomeData,
 } from '../../helpers/BudgetItems';
 import { Loading } from '../Elements/Loading';
 
@@ -64,7 +64,7 @@ const BudgetItems = () => {
 	const info = isLoading ? (
 		<Loading />
 	) : infoToDisplay === 'home' ? (
-		<BudgetHomeData
+		<BudgetItemHomeData
 			budgetItems={budgetItems}
 			addBudgetItem={addBudgetItem}
 			editBudgetItem={editBudgetItem}

@@ -14,7 +14,7 @@ const Transactions = () => {
 		) : activePage === 'invoice' ? (
 			<Invoice />
 		) : (
-			<div className='mt5'>
+			<div className='mt-5'>
 				<div className='flex justify-center'>
 					<div className='container w-2/3'>
 						<img
