@@ -6,6 +6,8 @@ const SearchBar = ({ onChange, value }: { onChange: any; value: string }) => {
 				id='search'
 				className='block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-lg  border-2 border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 '
 				placeholder='Search'
+				onChange={onChange}
+				value={value}
 				required
 			/>
 			<button

@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getRequest } from '../../api/connection';
+import { getRequest, getRequestWithQueryString } from '../../api/connection';
 import {
 	BudgetItemType,
 	DisplayStatusType,
@@ -52,6 +52,21 @@ const Budget = () => {
 		setInfoToDisplay('add');
 	};
 
+	const handleSearchBarSubmit = async (
+		event: FormEvent<HTMLFormElement>,
+		searchTerms: string
+	) => {
+		event.preventDefault();
+		setIsLoading(true);
+		const filteredResponse = await getRequestWithQueryString(
+			'/budgets',
+			[{ key: 'project', value: searchTerms }],
+			{ token: storeData.token, type: storeData.type }
+		);
+		setBudgets(filteredResponse.data.detail);
+		setIsLoading(false);
+	};
+
 	useEffect(() => {
 		fetchData();
 	}, []);
@@ -59,7 +74,11 @@ const Budget = () => {
 	const pageToDisplay = isLoading ? (
 		<Loading />
 	) : infoToDisplay === 'home' ? (
-		<BudgetHomeData budgets={budgets} addBudget={addBudget} />
+		<BudgetHomeData
+			budgets={budgets}
+			addBudget={addBudget}
+			handleSearchBarSubmit={handleSearchBarSubmit}
+		/>
 	) : (
 		''
 	);
@@ -72,20 +91,18 @@ export { Budget };
 const BudgetHomeData = ({
 	budgets,
 	addBudget,
+	handleSearchBarSubmit,
 }: {
 	budgets: budgetType[];
 	addBudget: any;
+	handleSearchBarSubmit: any;
 }) => {
 	const [searchTerms, setSearchTerms] = useState<string>('');
 	const searchBarChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { value } = event.target;
+		console.log(searchTerms);
+
 		setSearchTerms(value);
-	};
-
-	const handleSearchBarSubmit = (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-
-		alert(searchTerms);
 	};
 
 	const budgetDisplayData = budgets.map((budget) => {
@@ -121,13 +138,17 @@ const BudgetHomeData = ({
 		);
 	});
 
+	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+		handleSearchBarSubmit(event, searchTerms);
+	};
+
 	return (
 		<table className='mt-2 mx-auto table-auto'>
 			<caption className='text-left text-2xl font-semibold uppercase pb-5 '>
 				<div className='flex justify-between items-center'>
 					<p className=' w-1/4'>Budget</p>
 					<div className='text-base relative w-full'>
-						<form onSubmit={handleSearchBarSubmit}>
+						<form onSubmit={handleSubmit}>
 							<SearchBar
 								onChange={searchBarChange}
 								value={searchTerms}

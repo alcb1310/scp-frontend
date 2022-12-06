@@ -23,9 +23,7 @@ type queryParamsType = {
     value: string
 }
 
-export const getRequestWithQueryString =async (endPoint: string, uuid:string | null, queryParameter: queryParamsType[], authorization: BearerToken): Promise<AxiosResponse> => {
-    const url = uuid ? `${endPoint}/${uuid}}` : endPoint
-
+export const getRequestWithQueryString =async (url: string, queryParameter: queryParamsType[], authorization: BearerToken): Promise<AxiosResponse> => {
     const params = queryParameter.reduce((allData, query: queryParamsType) => ({...allData, [query.key]: query.value}), {})
 
     console.log(params);
