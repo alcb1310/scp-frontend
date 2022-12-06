@@ -13,6 +13,7 @@ import {
 	createBudgetItemType as CreateBudgetItemType,
 } from './budgetItemType';
 import { projectType as ProjectType } from './projectType';
+import { bearerToken as BearerToken } from './bearerToken';
 
 export type {
 	ButtonProps,
@@ -26,4 +27,5 @@ export type {
 	BudgetItemType,
 	CreateBudgetItemType,
 	ProjectType,
+	BearerToken
 };

@@ -7,20 +7,22 @@ import { validateStatus } from '../api/connection';
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
 	const storeData = useSelector((state: any) => state);
 	const dispatch = useDispatch();
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		validateStatus({
 			token: storeData.token,
 			type: storeData.type,
-		}).then((data) => {
-			dispatch({
-				type: 'users/SetCurrentUser',
-				payload: data.data.detail,
-			});
-		}).catch((err) => {
-			navigate('/')
 		})
+			.then((data) => {
+				dispatch({
+					type: 'users/SetCurrentUser',
+					payload: data.data.detail,
+				});
+			})
+			.catch((err) => {
+				navigate('/');
+			});
 	}, []);
 
 	return children;
