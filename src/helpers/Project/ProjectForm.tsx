@@ -20,8 +20,7 @@ const ProjectForm = ({
 				required={true}
 				inputType={'text'}
 				onChange={onChange}
-				value={project ? project.name : ''}
-			/>
+				value={project ? project.name : ''} enabled={true}			/>
 			<CheckboxElement
 				name={'is_active'}
 				label={'Active'}

@@ -26,6 +26,7 @@ export const SupplierForm = ({
 						? supplier.supplier_id
 						: ''
 				}
+				enabled={true}
 			/>
 			<InputElement
 				label={'Name'}
@@ -37,6 +38,7 @@ export const SupplierForm = ({
 				value={
 					supplier !== null && 'name' in supplier ? supplier.name : ''
 				}
+				enabled={true}
 			/>
 			<InputElement
 				label={'Contact Name'}
@@ -50,6 +52,7 @@ export const SupplierForm = ({
 						? supplier.contact_name
 						: ''
 				}
+				enabled={true}
 			/>
 			<InputElement
 				label={'Contact Email'}
@@ -63,6 +66,7 @@ export const SupplierForm = ({
 						? supplier.contact_email
 						: ''
 				}
+				enabled={true}
 			/>
 			<InputElement
 				label={'Contact Phone'}
@@ -76,6 +80,7 @@ export const SupplierForm = ({
 						? supplier.contact_phone
 						: ''
 				}
+				enabled={true}
 			/>
 		</>
 	);

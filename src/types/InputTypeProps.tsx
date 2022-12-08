@@ -9,5 +9,6 @@ export type userInputTypeProps = {
 	required: boolean;
 	inputType: userInputType;
 	onChange: ChangeEventHandler<HTMLInputElement> | undefined;
-	value: any
+	value: any,
+	enabled: boolean
 };

@@ -1,7 +1,6 @@
 import { UserInputTypeProps } from '../../types';
 
-const InputElement = (props: UserInputTypeProps) => {
-	const { label, error, inputName, required, inputType, value, onChange } = props;
+const InputElement = ({ label, error, inputName, required, inputType, value, onChange, enabled=true } : UserInputTypeProps) => {
 
 	return (
 		<>
@@ -11,6 +10,7 @@ const InputElement = (props: UserInputTypeProps) => {
 			<input
 				name={inputName}
 				id={inputName}
+				disabled={!enabled}
 				onChange={onChange}
 				required={required}
 				placeholder={label}

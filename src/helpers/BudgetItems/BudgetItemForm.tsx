@@ -34,6 +34,7 @@ export const BudgetItemForm = ({
 				inputType={'text'}
 				onChange={handleChange}
 				value={budgetItem.code}
+				enabled={true}
 			/>
 			<InputElement
 				label={'Name'}
@@ -43,6 +44,7 @@ export const BudgetItemForm = ({
 				inputType={'text'}
 				onChange={handleChange}
 				value={budgetItem.name}
+				enabled={true}
 			/>
 			<InputElement
 				label={'Level'}
@@ -52,6 +54,7 @@ export const BudgetItemForm = ({
 				inputType={'number'}
 				onChange={handleChange}
 				value={budgetItem.level}
+				enabled={true}
 			/>
 			<CheckboxElement
 				name={'accumulates'}

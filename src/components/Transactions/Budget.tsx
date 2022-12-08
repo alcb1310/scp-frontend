@@ -1,17 +1,24 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getRequest, getRequestWithQueryString } from '../../api/connection';
+import {
+	getRequest,
+	getRequestWithQueryString,
+	postRequest,
+} from '../../api/connection';
 import {
 	BudgetItemType,
 	DisplayStatusType,
+	ErrorType,
 	ProjectType,
 	StoreDataType,
 } from '../../types';
 import { AddButton } from '../Buttons/AddButton';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
-import { SecondaryButton } from '../Buttons/SecondaryButton';
 import { Loading } from '../Elements/Loading';
 import { SearchBar } from '../Inputs/SearchBar';
+import { getProjects } from '../../api/getProjects';
+import { getBudgetItems } from '../../api/getBudgetItems';
+import { InputElement, SelectElement } from '../Inputs';
 
 type budgetType = {
 	uuid: string | undefined;
@@ -26,6 +33,13 @@ type budgetType = {
 	updated_budget: number;
 	project: ProjectType;
 	budget_item: BudgetItemType;
+};
+
+type budgetFormType = {
+	project_id: string;
+	budget_item_id: string;
+	quantity: number;
+	cost: number;
 };
 
 const Budget = () => {
@@ -50,6 +64,10 @@ const Budget = () => {
 
 	const addBudget = () => {
 		setInfoToDisplay('add');
+	};
+	const saveBudget = async () => {
+		await fetchData();
+		setInfoToDisplay('home');
 	};
 
 	const handleSearchBarSubmit = async (
@@ -79,6 +97,8 @@ const Budget = () => {
 			addBudget={addBudget}
 			handleSearchBarSubmit={handleSearchBarSubmit}
 		/>
+	) : infoToDisplay === 'add' ? (
+		<BudgetAddData saveBudget={saveBudget} />
 	) : (
 		''
 	);
@@ -108,6 +128,7 @@ const BudgetHomeData = ({
 	const budgetDisplayData = budgets.map((budget) => {
 		return (
 			<tr key={budget.uuid} className='hover:bg-indigo-100'>
+				<td className='border-x-2 p-3'>{budget.project.name}</td>
 				<td className='border-x-2 p-3'>{budget.budget_item.code}</td>
 				<td className='border-x-2 p-3'>{budget.budget_item.name}</td>
 				<td className='border-x-2 p-3 text-right'>
@@ -166,6 +187,9 @@ const BudgetHomeData = ({
 			</caption>
 			<thead className='border-b-2 border-black font-bold bg-indigo-200'>
 				<tr>
+					<th rowSpan={2} className='text-center p-3'>
+						Project
+					</th>
 					<th colSpan={2} className='text-center p-3'>
 						Budget Item
 					</th>
@@ -188,5 +212,171 @@ const BudgetHomeData = ({
 			</thead>
 			<tbody>{budgetDisplayData}</tbody>
 		</table>
+	);
+};
+
+const BudgetAddData = ({ saveBudget }: { saveBudget: any }) => {
+	const [addedBudget, setAddedBudget] = useState<budgetFormType>({
+		project_id: '',
+		budget_item_id: '',
+		quantity: 0,
+		cost: 0,
+	});
+	const [error, setError] = useState<ErrorType | null>(null);
+	const [projects, setProjects] = useState<ProjectType[]>([]);
+	const [budgetItems, setBudgetItems] = useState<BudgetItemType[]>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+
+	const storeData = useSelector((state: StoreDataType) => state);
+
+	const fetchData = async () => {
+		setIsLoading(true);
+		const [projectResponse, budgetItemResponse] = await Promise.all([
+			getProjects(storeData),
+			getBudgetItems(storeData),
+		]);
+
+		setProjects(projectResponse.data.detail);
+		setBudgetItems(budgetItemResponse.data.detail);
+		setIsLoading(false);
+	};
+
+	useEffect(() => {
+		fetchData().catch((err) => console.error(err));
+	}, []);
+
+	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		try {
+			setIsLoading(true);
+			await postRequest('/budgets', addedBudget, {
+				token: storeData.token,
+				type: storeData.type,
+			});
+		} catch (err: any) {
+			if (err.response.status === 409)
+				setError({
+					errorKey: 'project_id',
+					errorDescription: err.response.data.detail,
+				});
+			else setError(err.response.data.detail);
+			console.error(err);
+			return;
+		} finally {
+			setIsLoading(false);
+		}
+		saveBudget();
+	};
+
+	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const { name, value, type, valueAsNumber } = event.target;
+		setError(null);
+
+		const saveValue =
+			type === 'number' && !isNaN(valueAsNumber) ? valueAsNumber : value;
+
+		setAddedBudget((prevBudget) => ({ ...prevBudget, [name]: saveValue }));
+	};
+
+	const dataToDisplay = isLoading ? (
+		<Loading />
+	) : (
+		<form onSubmit={handleSubmit}>
+			<BudgetFormData
+				budget={addedBudget}
+				error={error}
+				projects={projects}
+				budgetItems={budgetItems}
+				onChange={handleChange}
+			/>
+			<PrimaryButton
+				buttonType={'submit'}
+				text={'Submit'}
+				onEvent={handleSubmit}
+			/>
+		</form>
+	);
+
+	return dataToDisplay;
+};
+
+const BudgetFormData = ({
+	budget,
+	error,
+	projects,
+	budgetItems,
+	onChange,
+}: {
+	budget: budgetFormType;
+	error: ErrorType | null;
+	projects: ProjectType[];
+	budgetItems: BudgetItemType[];
+	onChange: any;
+}) => {
+	const budgetItemOptions = budgetItems.map((budgetItem) => (
+		<option key={budgetItem.uuid} value={budgetItem.uuid}>
+			{budgetItem.name}
+		</option>
+	));
+	const projectOptions = projects.map((project) => (
+		<option key={project.uuid} value={project.uuid}>
+			{project.name}
+		</option>
+	));
+
+	return (
+		<>
+			<SelectElement
+				label={'Project'}
+				error={error}
+				inputName={'project_id'}
+				required={true}
+				value={budget.project_id}
+				onChange={onChange}
+			>
+				{projectOptions}
+			</SelectElement>
+			<SelectElement
+				label={'Budget Item'}
+				error={error}
+				inputName={'budget_item_id'}
+				required={true}
+				value={budget.budget_item_id}
+				onChange={onChange}
+			>
+				{budgetItemOptions}
+			</SelectElement>
+			<InputElement
+				label={'Quantity'}
+				error={error}
+				inputName={'quantity'}
+				required={true}
+				inputType={'number'}
+				onChange={onChange}
+				value={budget.quantity}
+				enabled={true}
+			/>
+			<InputElement
+				label={'Cost'}
+				error={error}
+				inputName={'cost'}
+				required={true}
+				inputType={'number'}
+				onChange={onChange}
+				value={budget.cost}
+				enabled={true}
+			/>
+			<InputElement
+				label={'Total'}
+				error={error}
+				inputName={'total'}
+				required={true}
+				inputType={'number'}
+				onChange={onChange}
+				value={(budget.cost * budget.quantity).toFixed(2)}
+				enabled={false}
+			/>
+		</>
 	);
 };
