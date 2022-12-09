@@ -43,7 +43,7 @@ const NavBar = () => {
 						</li>
 					</ul>
 				</div>
-				<Link to='#' className='text-indigo-200 hover:text-indigo-50'>
+				<Link to='/' className='text-indigo-200 hover:text-indigo-50'>
 					Logout
 				</Link>
 			</nav>

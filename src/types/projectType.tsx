@@ -1,5 +1,5 @@
 export type projectType = {
-	uuid: string | undefined;
+	uuid: string;
 	name: string;
 	is_active: boolean;
 };
