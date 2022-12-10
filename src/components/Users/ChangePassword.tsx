@@ -72,18 +72,16 @@ const ChangePassword = () => {
 					inputName={'password1'}
 					required={true}
 					inputType={'password'}
-					onChange={handleChange} 
-					value={'password1' in password ? password.password1 : ''}
-				/>
+					onChange={handleChange}
+					value={'password1' in password ? password.password1 : ''} enabled={true}				/>
 				<InputElement
 					label={'Repeat Password'}
 					error={error}
 					inputName={'password2'}
 					required={true}
 					inputType={'password'}
-					onChange={handleChange} 
-					value={'password2' in password ? password.password2 : ''}
-				/>
+					onChange={handleChange}
+					value={'password2' in password ? password.password2 : ''} enabled={true}				/>
                 <PrimaryButton buttonType={'submit'} text={'Submit'} onEvent={handleSubmit}  />
 			</form>
 		</>

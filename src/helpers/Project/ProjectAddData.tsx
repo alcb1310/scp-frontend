@@ -7,7 +7,7 @@ import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 
 export const ProjectAddData = ({ saveProject }: { saveProject: any }) => {
 	const [project, setProject] = useState<ProjectType>({
-		uuid: undefined,
+		uuid: '',
 		is_active: false,
 		name: '',
 	});

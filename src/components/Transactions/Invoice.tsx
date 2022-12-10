@@ -76,7 +76,7 @@ const Invoice = () => {
 	) : infoToDisplay === 'add' ? (
 		<InvoiceAddData saveInvoice={saveInvoice} />
 	) : (
-		''
+		<h1>Invoice</h1>
 	);
 
 	return displayData;

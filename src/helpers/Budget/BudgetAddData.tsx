@@ -14,7 +14,7 @@ import { BudgetFormData } from '.';
 
 export const BudgetAddData = ({ saveBudget }: { saveBudget: any }) => {
 	const [addedBudget, setAddedBudget] = useState<BudgetFormType>({
-		uuid: undefined,
+		uuid: '',
 		project_id: '',
 		budget_item_id: '',
 		quantity: 0,

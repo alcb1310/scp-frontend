@@ -59,7 +59,8 @@ const Register = () => {
 						required={true}
 						onChange={handleChange}
 						inputType='text'
-						value={('ruc' in registration) ? registration.ruc : ''}
+						value={'ruc' in registration ? registration.ruc : ''}
+						enabled={true}
 					/>
 					<InputElement
 						label='Name'
@@ -68,7 +69,8 @@ const Register = () => {
 						required={true}
 						onChange={handleChange}
 						inputType='text'
-						value={('name' in registration) ? registration.name : ''}
+						value={'name' in registration ? registration.name : ''}
+						enabled={true}
 					/>
 
 					<label className='block mt-4 mb-2'>
@@ -121,7 +123,10 @@ const Register = () => {
 						required={true}
 						onChange={handleChange}
 						inputType='email'
-						value={('email' in registration) ? registration.email : ''}
+						value={
+							'email' in registration ? registration.email : ''
+						}
+						enabled={true}
 					/>
 					<InputElement
 						label='Password'
@@ -130,7 +135,12 @@ const Register = () => {
 						required={true}
 						onChange={handleChange}
 						inputType='password'
-						value={('password' in registration) ? registration.password : ''}
+						value={
+							'password' in registration
+								? registration.password
+								: ''
+						}
+						enabled={true}
 					/>
 					<InputElement
 						label='Full name'
@@ -139,7 +149,12 @@ const Register = () => {
 						required={true}
 						onChange={handleChange}
 						inputType='text'
-						value={('fullname' in registration) ? registration.fullname : ''}
+						value={
+							'fullname' in registration
+								? registration.fullname
+								: ''
+						}
+						enabled={true}
 					/>
 
 					<PrimaryButton

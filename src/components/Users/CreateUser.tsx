@@ -65,8 +65,9 @@ const CreateUser = (props: { successEvent: any }) => {
 					inputName={'email'}
 					required={true}
 					inputType={'email'}
-					onChange={handleChange} 
-					value={('email' in user) ? user.email : ''}				
+					onChange={handleChange}
+					value={'email' in user ? user.email : ''}
+					enabled={true}
 				/>
 				<InputElement
 					label={'Password'}
@@ -75,7 +76,8 @@ const CreateUser = (props: { successEvent: any }) => {
 					required={true}
 					inputType={'password'}
 					onChange={handleChange}
-					value={('password' in user) ? user.password : ''}
+					value={'password' in user ? user.password : ''}
+					enabled={true}
 				/>
 				<InputElement
 					label={'Name'}
@@ -84,7 +86,8 @@ const CreateUser = (props: { successEvent: any }) => {
 					required={true}
 					inputType={'text'}
 					onChange={handleChange}
-					value={('name' in user) ? user.name : ''}
+					value={'name' in user ? user.name : ''}
+					enabled={true}
 				/>
 
 				<PrimaryButton
