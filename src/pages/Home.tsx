@@ -36,7 +36,7 @@ function Home() {
 					</div>
 					<img
 						className='md:col-span-7 w-full object-fill order-1 md:order-5'
-						src='../../public/images/hero-image.jpg'
+						src='/images/hero-image.jpg'
 						alt='Budget'
 					/>
 				</div>
@@ -110,4 +110,3 @@ function Home() {
 }
 
 export { Home };
-
