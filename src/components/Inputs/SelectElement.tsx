@@ -23,6 +23,7 @@ const SelectElement = (props: selectElementType) => {
 			</label>
 			<select
 				name={inputName}
+				id={inputName}
 				onChange={onChange}
 				value={value}
 				className={`block rounded-md w-full text-indigo-700 focus:border-indigo-700 focus:ring-indigo-700 ${

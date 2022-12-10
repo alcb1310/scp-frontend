@@ -1,14 +1,20 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { fetchProjectsAndSuppliers } from '../../api/fetchProjectsAndSuppliers';
 import { getRequest } from '../../api/getRequest';
 import {
 	DisplayStatusType,
+	ErrorType,
 	GetSuppliersType,
 	ProjectType,
 	StoreDataType,
 } from '../../types';
 import { AddButton } from '../Buttons/AddButton';
 import { Loading } from '../Elements/Loading';
+import { InvoiceFormData } from '../../helpers/Invoice';
+import { PrimaryButton } from '../Buttons/PrimaryButton';
+import { SecondaryButton } from '../Buttons/SecondaryButton';
+import { postRequest } from '../../api/postRequest';
 
 type invoiceDisplayType = {
 	uuid: string;
@@ -17,6 +23,14 @@ type invoiceDisplayType = {
 	total: number;
 	project: ProjectType;
 	supplier: GetSuppliersType;
+};
+
+export type saveInvoiceType = {
+	project: string;
+	supplier: string;
+	invoice_number: string;
+	date: string;
+	total: number;
 };
 
 const useFetchInvoices = (storeData: StoreDataType, setIsLoading: any) => {
@@ -47,14 +61,20 @@ const Invoice = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const storeData = useSelector((state: StoreDataType) => state);
 
-	const invoices = useFetchInvoices(storeData, setIsLoading);
+	let invoices = useFetchInvoices(storeData, setIsLoading);
 
 	const addInovice = () => setInfoToDisplay('add');
+
+	const saveInvoice = () => {
+		setInfoToDisplay('home');
+	};
 
 	const displayData = isLoading ? (
 		<Loading />
 	) : infoToDisplay === 'home' ? (
 		<InvoiceHomeData invoices={invoices} addInvoice={addInovice} />
+	) : infoToDisplay === 'add' ? (
+		<InvoiceAddData saveInvoice={saveInvoice} />
 	) : (
 		''
 	);
@@ -111,4 +131,104 @@ const InvoiceHomeData = ({
 			<tbody>{invoicesToDisplay}</tbody>
 		</table>
 	);
+};
+
+const InvoiceAddData = ({ saveInvoice }: { saveInvoice: any }) => {
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [projects, setProjects] = useState<ProjectType[]>([]);
+	const [suppliers, setSuppliers] = useState<GetSuppliersType[]>([]);
+	const [error, setError] = useState<ErrorType | null>(null);
+	const [addedInvoice, setAddedInvoice] = useState<saveInvoiceType>({
+		project: '',
+		supplier: '',
+		invoice_number: '',
+		date: '',
+		total: 0,
+	});
+	const [displayAddDetail, setDisplayAddDetail] = useState<boolean>(false);
+	const [invoce, setInvoice] = useState<invoiceDisplayType | null>(null);
+
+	const storeData = useSelector((state: StoreDataType) => state);
+
+	useEffect(() => {
+		fetchProjectsAndSuppliers(
+			storeData,
+			setIsLoading,
+			setProjects,
+			setSuppliers
+		).catch((err) => console.error(err));
+	}, []);
+
+	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = event.target;
+		setError(null);
+		setAddedInvoice((prevInvoice) => ({ ...prevInvoice, [name]: value }));
+	};
+
+	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		try {
+			const invoiceAddResponse = await postRequest(
+				'/invoices',
+				addedInvoice,
+				{
+					token: storeData.token,
+					type: storeData.type,
+				}
+			);
+
+			setInvoice(invoiceAddResponse.data.detail);
+			setDisplayAddDetail(true);
+		} catch (err: any) {
+			if (err.response.status === 409)
+				setError({
+					errorKey: 'code',
+					errorDescription: err.response.data.detail,
+				});
+			else setError(err.response.data.detail);
+		}
+	};
+
+	const handleAddDetail = () => {};
+	const handleClose = () => {
+		saveInvoice();
+	};
+
+	const display = isLoading ? (
+		<Loading />
+	) : (
+		<form onSubmit={handleSubmit}>
+			<InvoiceFormData
+				addedInvoice={addedInvoice}
+				error={error}
+				handleChange={handleChange}
+				projects={projects}
+				suppliers={suppliers}
+			/>
+			<div className='flex justify-between'>
+				<div>
+					<PrimaryButton
+						buttonType={'submit'}
+						text={'Submit'}
+						onEvent={handleSubmit}
+					/>
+					<SecondaryButton
+						buttonType={'button'}
+						text={'Close'}
+						onEvent={handleClose}
+					/>
+				</div>
+				{displayAddDetail && (
+					<PrimaryButton
+						buttonType={'button'}
+						text={'Add Detail'}
+						onEvent={handleAddDetail}
+					/>
+				)}
+			</div>
+		</form>
+	);
+
+	return display;
 };
