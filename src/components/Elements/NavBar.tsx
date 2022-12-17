@@ -19,7 +19,7 @@ const NavBar = () => {
 						</li>
 						<li className='mr-6'>
 							<Link
-								to='#'
+								to='/reports'
 								className='text-indigo-200 hover:text-indigo-50'
 							>
 								Reports
