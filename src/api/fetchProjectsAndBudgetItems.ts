@@ -1,5 +1,5 @@
 import { StoreDataType } from '../types';
-import { getProjects, getBudgetItems } from './connection';
+import { getBudgetItems, getRequestWithQueryString } from './connection';
 
 export const fetchProjectsAndBudgetItems = async (
 	storeData: StoreDataType,
@@ -9,8 +9,16 @@ export const fetchProjectsAndBudgetItems = async (
 ) => {
 	setIsLoading(true);
 	const [projectResponse, budgetItemResponse] = await Promise.all([
-		getProjects(storeData),
-		getBudgetItems(storeData),
+		getRequestWithQueryString(
+			'/projects',
+			[{ key: 'active', value: 'true' }],
+			{ token: storeData.token, type: storeData.type }
+		),
+		getRequestWithQueryString(
+			'/budget-items',
+			[{ key: 'accumulates', value: 'false' },{key: 'sort', value: 'name'}],
+			{ token: storeData.token, type: storeData.type }
+		),
 	]);
 
 	setProjects(projectResponse.data.detail);

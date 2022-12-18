@@ -5,6 +5,7 @@ import { DisplayStatusType, StoreDataType, BudgetType } from '../../types';
 import { Loading } from '../Elements/Loading';
 import { BudgetHomeData, BudgetAddData } from '../../helpers/Budget';
 import { BudgetEditData } from '../../helpers/Budget/BudgetEditData';
+import { queryParamsType } from '../../types/queryParamsType';
 
 const Budget = () => {
 	const [infoToDisplay, setInfoToDisplay] =
@@ -20,10 +21,20 @@ const Budget = () => {
 
 	const fetchData = async () => {
 		setIsLoading(true);
-		const budgetsResponse = await getRequest('/budgets', null, {
-			token: storeData.token,
-			type: storeData.type,
-		});
+		const params: queryParamsType[] = [
+			{
+				key: 'accumulates',
+				value: 'false',
+			},
+		];
+		const budgetsResponse = await getRequestWithQueryString(
+			'/budgets',
+			params,
+			{
+				token: storeData.token,
+				type: storeData.type,
+			}
+		);
 
 		setBudgets(budgetsResponse.data.detail);
 		setIsLoading(false);
