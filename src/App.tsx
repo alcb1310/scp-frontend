@@ -9,6 +9,7 @@ import { Parameters } from './pages/Parameters';
 import { Register } from './pages/Register';
 import { Transactions } from './pages/Transactions';
 import { UsersMain } from './pages/UsersMain';
+import { Reports } from './pages/Report';
 
 function App() {
 	return (
@@ -73,6 +74,18 @@ function App() {
 								<>
 									<NavBar />
 									<Transactions />
+									<Footer />
+								</>
+							</PrivateRoute>
+						}
+					/>
+					<Route
+						path='/reports'
+						element={
+							<PrivateRoute>
+								<>
+									<NavBar />
+									<Reports />
 									<Footer />
 								</>
 							</PrivateRoute>

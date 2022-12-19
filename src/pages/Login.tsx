@@ -35,7 +35,7 @@ const Login = () => {
 
 			navigate('/app');
 		} catch (err: any) {
-			if (err.response.status === 401)
+			if ('response' in err && err.response.status === 401)
 				setError({
 					errorKey: 'email',
 					errorDescription: err.response.data.detail,

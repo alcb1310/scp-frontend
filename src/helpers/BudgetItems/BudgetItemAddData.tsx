@@ -1,9 +1,14 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getRequest, postRequest } from '../../api/connection';
+import {
+	getRequest,
+	getRequestWithQueryString,
+	postRequest,
+} from '../../api/connection';
 import { ErrorType, StoreDataType, CreateBudgetItemType } from '../../types';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { BudgetItemForm } from '.';
+import { queryParamsType } from '../../types/queryParamsType';
 
 export const BudgetItemAddData = ({
 	saveBudgetItem,
@@ -20,7 +25,17 @@ export const BudgetItemAddData = ({
 	);
 
 	const fetchData = async () => {
-		const data = await getRequest('/budget-items', null, {
+		const params: queryParamsType[] = [
+			{
+				key: 'accumulates',
+				value: 'true',
+			},
+			{
+				key: 'sort',
+				value: 'name',
+			},
+		];
+		const data = await getRequestWithQueryString('/budget-items', params, {
 			token: storeData.token,
 			type: storeData.type,
 		});
