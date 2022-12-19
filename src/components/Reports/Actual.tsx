@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { getProjects, getRequestWithQueryString } from '../../api/connection';
 import { Loading } from '../Elements/Loading';
 import { queryParamsType } from '../../types/queryParamsType';
+import { PrimaryButton } from '../Buttons/PrimaryButton';
 
 const Actual = () => {
 	const [hasData, setHasData] = useState<boolean>(false);
@@ -86,6 +87,29 @@ const Actual = () => {
 		loadBudget();
 		setHasData(true);
 	}, [selectedProject, level]);
+
+	const handleExcelClick = async () => {
+		const params: queryParamsType[] = [
+			{
+				key: 'project',
+				value: selectedProject,
+			},
+			{
+				key: 'level',
+				value: level,
+			},
+		];
+		const result = await getRequestWithQueryString(
+			'/excel/budgets',
+			params,
+			{
+				type: storeData.type,
+				token: storeData.token,
+			}
+		);
+
+		console.log(result);
+	};
 
 	const budgetDisplayData = budgets.map((budget) => {
 		return (
@@ -184,7 +208,13 @@ const Actual = () => {
 				<option value={3}>3</option>
 				<option value={4}>4</option>
 			</SelectElement>
-
+			{hasData && (
+				<PrimaryButton
+					buttonType={'button'}
+					text={'Excel'}
+					onEvent={handleExcelClick}
+				/>
+			)}
 			{showResults}
 		</>
 	);
