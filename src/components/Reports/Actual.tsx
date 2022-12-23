@@ -2,7 +2,12 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { BudgetType, ProjectType, StoreDataType } from '../../types';
 import { SelectElement } from '../Inputs';
 import { useSelector } from 'react-redux';
-import { getProjects, getRequestWithQueryString } from '../../api/connection';
+import {
+	SERVER,
+	downloadFileWithQueryString,
+	getProjects,
+	getRequestWithQueryString,
+} from '../../api/connection';
 import { Loading } from '../Elements/Loading';
 import { queryParamsType } from '../../types/queryParamsType';
 import { PrimaryButton } from '../Buttons/PrimaryButton';
@@ -51,7 +56,6 @@ const Actual = () => {
 			params,
 			{ token: storeData.token, type: storeData.type }
 		);
-		console.log(selectedBudget);
 
 		setBudgets(selectedBudget.data.detail);
 		setIsLoading(false);
@@ -99,16 +103,25 @@ const Actual = () => {
 				value: level,
 			},
 		];
-		const result = await getRequestWithQueryString(
-			'/excel/budgets',
-			params,
-			{
-				type: storeData.type,
-				token: storeData.token,
-			}
-		);
+		// const result = fetch(`${SERVER}/excel/budgets`, {
+		// 	method: 'get',
+		// 	headers: new Headers({
+		// 		Authorization: `${storeData.type} ${storeData.token}`,
+		// 	}),
+		// })
+		// 	.then((res) => res.blob())
+		// 	.then((blob) => {
+		// 		const _url = window.URL.createObjectURL(blob);
+		// 		window.open(_url, 'blank');
+		// 	})
+		// 	.catch((err) => {
+		// 		console.error(err);
+		// 	});
 
-		console.log(result);
+		await downloadFileWithQueryString('/excel/budgets', params, {
+			type: storeData.type,
+			token: storeData.token,
+		});
 	};
 
 	const budgetDisplayData = budgets.map((budget) => {

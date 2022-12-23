@@ -38,8 +38,6 @@ export const getRequestWithQueryString = async (
 		{}
 	);
 
-	console.log(params);
-
 	const response: AxiosResponse = await axios({
 		method: 'get',
 		baseURL: SERVER,
