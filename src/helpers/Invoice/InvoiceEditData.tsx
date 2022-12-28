@@ -9,7 +9,7 @@ import {
 	InvoiceDisplayType,
 	SaveInvoiceType,
 } from '../../types';
-import { InvoiceFormData } from '../../helpers/Invoice';
+import { InvoiceDetailModal, InvoiceFormData } from '../../helpers/Invoice';
 import { DisplayDetailData } from './';
 import { Loading } from '../../components/Elements/Loading';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
@@ -34,6 +34,7 @@ export const InvoiceEditData = ({
 		date: selectedInvoice.date,
 		total: selectedInvoice.total,
 	});
+	const [showModal, setShowModal] = useState<boolean>(false);
 
 	const storeData = useSelector((state: StoreDataType) => state);
 
@@ -50,7 +51,10 @@ export const InvoiceEditData = ({
 		event.preventDefault();
 	};
 
-	const handleAddDetail = () => {};
+	const toggleDetailModal = () => {
+		setShowModal((prevModal) => !prevModal);
+	};
+
 	const handleClose = () => {
 		saveInvoice();
 	};
@@ -83,11 +87,17 @@ export const InvoiceEditData = ({
 					<PrimaryButton
 						buttonType={'button'}
 						text={'Add Detail'}
-						onEvent={handleAddDetail}
+						onEvent={toggleDetailModal}
 					/>
 				</div>
 			</form>
 			<DisplayDetailData invoice={selectedInvoice} />
+			{showModal && (
+				<InvoiceDetailModal
+					toggleDetailModal={toggleDetailModal}
+					invoice={selectedInvoice}
+				/>
+			)}
 		</>
 	);
 

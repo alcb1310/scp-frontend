@@ -10,11 +10,10 @@ import {
 	SaveInvoiceType,
 } from '../../types';
 import { Loading } from '../../components/Elements/Loading';
-import { InvoiceFormData } from '.';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
 import { postRequest } from '../../api/connection';
-import { DisplayDetailData } from './';
+import { DisplayDetailData, InvoiceDetailModal, InvoiceFormData } from './';
 
 export const InvoiceAddData = ({ saveInvoice }: { saveInvoice: any }) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -30,6 +29,7 @@ export const InvoiceAddData = ({ saveInvoice }: { saveInvoice: any }) => {
 	});
 	const [displayAddDetail, setDisplayAddDetail] = useState<boolean>(false);
 	const [invoice, setInvoice] = useState<InvoiceDisplayType | null>(null);
+	const [showModal, setShowModal] = useState<boolean>(false);
 
 	const storeData = useSelector((state: StoreDataType) => state);
 
@@ -73,7 +73,10 @@ export const InvoiceAddData = ({ saveInvoice }: { saveInvoice: any }) => {
 		}
 	};
 
-	const handleAddDetail = () => {};
+	const toggleDetailModal = () => {
+		setShowModal((prevModal) => !prevModal);
+	};
+
 	const handleClose = () => {
 		saveInvoice();
 	};
@@ -107,12 +110,18 @@ export const InvoiceAddData = ({ saveInvoice }: { saveInvoice: any }) => {
 						<PrimaryButton
 							buttonType={'button'}
 							text={'Add Detail'}
-							onEvent={handleAddDetail}
+							onEvent={toggleDetailModal}
 						/>
 					)}
 				</div>
 			</form>
 			{displayAddDetail && <DisplayDetailData invoice={invoice} />}
+			{showModal && (
+				<InvoiceDetailModal
+					toggleDetailModal={toggleDetailModal}
+					invoice={invoice}
+				/>
+			)}
 		</>
 	);
 

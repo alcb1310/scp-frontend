@@ -4,3 +4,10 @@ export type buttonProps = {
 	text: string;
 	onEvent: any;
 };
+
+export type modalButtonProps = {
+	buttonType: buttonHTMLType;
+	text: string;
+	onEvent: any;
+	modal: string;
+};
