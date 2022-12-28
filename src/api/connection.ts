@@ -1,3 +1,4 @@
+import { fetchDetailData } from './fetchDetailData';
 import { downloadFileWithQueryString } from './downloadFileWithQueryString';
 import { postRequest } from './postRequest';
 import { putRequest } from './putRequest';
@@ -24,4 +25,5 @@ export {
 	getSuppliers,
 	fetchProjectsAndSuppliers,
 	downloadFileWithQueryString,
+	fetchDetailData,
 };

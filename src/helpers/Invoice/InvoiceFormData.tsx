@@ -1,6 +1,6 @@
 import { ErrorType, GetSuppliersType, ProjectType } from '../../types';
 import { InputElement, SelectElement } from '../../components/Inputs';
-import { saveInvoiceType } from '../../components/Transactions/Invoice';
+import { saveInvoiceType } from '../../types/invoiceTypes';
 
 export const InvoiceFormData = ({
 	addedInvoice,

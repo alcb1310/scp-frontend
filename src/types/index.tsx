@@ -18,6 +18,11 @@ import {
 	budgetType as BudgetType,
 	budgetFormType as BudgetFormType,
 } from './budgetType';
+import {
+	invoiceDisplayType as InvoiceDisplayType,
+	invoiceDetailType as InvoiceDetailType,
+	saveInvoiceType as SaveInvoiceType,
+} from './invoiceTypes';
 
 export type {
 	ButtonProps,
@@ -34,4 +39,7 @@ export type {
 	BearerToken,
 	BudgetFormType,
 	BudgetType,
+	InvoiceDetailType,
+	InvoiceDisplayType,
+	SaveInvoiceType,
 };
