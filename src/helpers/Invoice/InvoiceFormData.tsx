@@ -76,7 +76,7 @@ export const InvoiceFormData = ({
 				required={false}
 				inputType={'number'}
 				onChange={handleChange}
-				value={addedInvoice.total}
+				value={addedInvoice.total.toFixed(2)}
 				enabled={false}
 			/>
 		</>
