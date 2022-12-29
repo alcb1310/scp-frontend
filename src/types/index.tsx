@@ -23,6 +23,7 @@ import {
 	invoiceDetailType as InvoiceDetailType,
 	saveInvoiceType as SaveInvoiceType,
 } from './invoiceTypes';
+import { invoiceDetailType as SaveInvoiceDetailType } from './invoiceDetailType';
 
 export type {
 	ButtonProps,
@@ -42,4 +43,5 @@ export type {
 	InvoiceDetailType,
 	InvoiceDisplayType,
 	SaveInvoiceType,
+	SaveInvoiceDetailType,
 };

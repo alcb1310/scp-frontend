@@ -8,6 +8,7 @@ import {
 	StoreDataType,
 	InvoiceDisplayType,
 	SaveInvoiceType,
+	SaveInvoiceDetailType,
 } from '../../types';
 import { Loading } from '../../components/Elements/Loading';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';

@@ -22,8 +22,6 @@ export const DisplayDetailData = ({
 		fetchDetailData(storeData, invoice.uuid, setIsLoading, setDetails);
 	}, []);
 
-	console.log(details);
-
 	const detailRows = details.map((detail) => {
 		return (
 			<tr key={detail.uuid}>

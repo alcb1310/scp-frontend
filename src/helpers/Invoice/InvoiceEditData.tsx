@@ -8,12 +8,14 @@ import {
 	StoreDataType,
 	InvoiceDisplayType,
 	SaveInvoiceType,
+	SaveInvoiceDetailType,
 } from '../../types';
 import { InvoiceDetailModal, InvoiceFormData } from '../../helpers/Invoice';
 import { DisplayDetailData } from './';
 import { Loading } from '../../components/Elements/Loading';
 import { PrimaryButton } from '../../components/Buttons/PrimaryButton';
 import { SecondaryButton } from '../../components/Buttons/SecondaryButton';
+import { postRequest } from '../../api/connection';
 
 export const InvoiceEditData = ({
 	saveInvoice,
