@@ -96,11 +96,12 @@ const UsersMain = () => {
 						setActivePage('create');
 					}}
 				/>
+				<hr className='border-b-2 border-indigo-200 mt-5 mb-3' />
 				<PrimaryButton
 					buttonType='button'
-					text={'Update User'}
+					text={'Users Home'}
 					onEvent={() => {
-						setActivePage('update');
+						setActivePage(null);
 					}}
 				/>
 			</aside>
