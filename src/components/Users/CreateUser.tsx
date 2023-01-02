@@ -2,16 +2,10 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useSelector } from "react-redux";
 import { postRequest } from "../../api/connection";
-import { StoreDataType } from "../../types";
+import { StoreDataType, CreateUserType } from "../../types";
 import { ErrorType } from "../../types/ErrorType";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import InputElement from "../Inputs/InputElement";
-
-type CreateUserType = {
-  email: string;
-  password: string;
-  name: string;
-};
 
 function UserForm({
   handleSubmit,
