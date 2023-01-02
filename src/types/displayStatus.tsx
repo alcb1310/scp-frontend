@@ -1,1 +1,1 @@
-export type displayStatus = 'home' | 'add' | 'edit';
+export type DisplayStatus = "home" | "add" | "edit";

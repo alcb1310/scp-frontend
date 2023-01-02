@@ -1,6 +1,7 @@
-import { SupplierAddData } from './SupplierAddData';
-import { SupplierEditData } from './SupplierEditData';
-import { SupplierHomeData } from './SupplierHomeData';
-import { SupplierForm } from './SupplierForm';
+/* eslint-disable import/no-cycle */
+import SupplierAddData from "./SupplierAddData";
+import SupplierEditData from "./SupplierEditData";
+import SupplierHomeData from "./SupplierHomeData";
+import SupplierForm from "./SupplierForm";
 
 export { SupplierAddData, SupplierEditData, SupplierHomeData, SupplierForm };

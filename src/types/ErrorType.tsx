@@ -1,4 +1,4 @@
-export type errorType = {
-	errorKey: string;
-	errorDescription: string;
+export type ErrorType = {
+  errorKey: string;
+  errorDescription: string;
 };

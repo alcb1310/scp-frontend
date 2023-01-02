@@ -1,185 +1,164 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { postRequest } from '../api/connection';
-import { PrimaryButton } from '../components/Buttons/PrimaryButton';
-import { SecondaryButton } from '../components/Buttons/SecondaryButton';
-import { Footer } from '../components/Elements/Footer';
-import { InputElement } from '../components/Inputs/InputElement';
-import { ErrorType, RegistrationType } from '../types';
+import { ChangeEvent, FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { postRequest } from "../api/connection";
+import PrimaryButton from "../components/Buttons/PrimaryButton";
+import SecondaryButton from "../components/Buttons/SecondaryButton";
+import Footer from "../components/Elements/Footer";
+import InputElement from "../components/Inputs/InputElement";
+import { ErrorType, RegistrationType } from "../types";
 
-const Register = () => {
-	const [registration, setRegistration] = useState<RegistrationType | {}>({});
-	const [error, setError] = useState<ErrorType | null>(null);
-	const navigate = useNavigate();
+function Register() {
+  const [registration, setRegistration] = useState<RegistrationType>({
+    ruc: "",
+    name: "",
+    employees: 0,
+    email: "",
+    password: "",
+    fullname: "",
+  });
+  const [error, setError] = useState<ErrorType | null>(null);
+  const navigate = useNavigate();
 
-	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = event.target;
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
 
-		setRegistration((prevRegistration) => {
-			if (name === 'plan')
-				return { ...prevRegistration, employees: parseInt(value) };
+    setRegistration((prevRegistration) => {
+      if (name === "plan")
+        return { ...prevRegistration, employees: parseInt(value, 10) };
 
-			return { ...prevRegistration, [name]: value };
-		});
-	};
+      return { ...prevRegistration, [name]: value };
+    });
+  };
 
-	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		setError(null);
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setError(null);
 
-		try {
-			const response = await postRequest('/companies', registration);
+    try {
+      // const response = await postRequest("/companies", registration);
+      await postRequest("/companies", registration);
 
-			navigate('/login');
-		} catch (err: any) {
-			if (err.response.status === 400) setError(err.response.data.detail);
-			if (err.response.status === 409)
-				setError({
-					errorKey: 'ruc',
-					errorDescription: err.response.data.detail,
-				});
-		}
-	};
+      navigate("/login");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      if (err.response.status === 400) setError(err.response.data.detail);
+      if (err.response.status === 409)
+        setError({
+          errorKey: "ruc",
+          errorDescription: err.response.data.detail,
+        });
+    }
+  };
 
-	return (
-		<div className="bg-[url('/images/register-background-30.png')] h-screen bg-cover bg-opacity-30">
-			<h1 className='text-4xl uppercase font-bold text-indigo-800 text-center pt-4'>
-				Register
-			</h1>
+  return (
+    <div className="bg-[url('/images/register-background-30.png')] h-screen bg-cover bg-opacity-30">
+      <h1 className="text-4xl uppercase font-bold text-indigo-800 text-center pt-4">
+        Register
+      </h1>
 
-			<div className='container w-1/3 mx-auto mt-5 mb-5'>
-				<form className='text-indigo-600' onSubmit={handleSubmit}>
-					<h3 className='font-bold text-lg mt-8'>
-						Company Information
-					</h3>
-					<InputElement
-						label='RUC'
-						error={error}
-						inputName='ruc'
-						required={true}
-						onChange={handleChange}
-						inputType='text'
-						value={'ruc' in registration ? registration.ruc : ''}
-						enabled={true}
-					/>
-					<InputElement
-						label='Name'
-						error={error}
-						inputName='name'
-						required={true}
-						onChange={handleChange}
-						inputType='text'
-						value={'name' in registration ? registration.name : ''}
-						enabled={true}
-					/>
+      <div className="container w-1/3 mx-auto mt-5 mb-5">
+        <form className="text-indigo-600" onSubmit={handleSubmit}>
+          <h3 className="font-bold text-lg mt-8">Company Information</h3>
+          <InputElement
+            label="RUC"
+            error={error}
+            inputName="ruc"
+            required
+            onChange={handleChange}
+            inputType="text"
+            value={"ruc" in registration ? registration.ruc : ""}
+            enabled
+          />
+          <InputElement
+            label="Name"
+            error={error}
+            inputName="name"
+            required
+            onChange={handleChange}
+            inputType="text"
+            value={"name" in registration ? registration.name : ""}
+            enabled
+          />
 
-					<label className='block mt-4 mb-2'>
-						Choose your plan <span className='text-red-600'>*</span>
-					</label>
-					<div
-						className={`flex space-x-4 ${
-							error !== null &&
-							error.errorKey === 'employees' &&
-							'border-red-600 border-2 rounded-md'
-						}`}
-						onChange={handleChange}
-					>
-						<div className='my-1'>
-							<input
-								type='radio'
-								name='plan'
-								id='starter'
-								value={5}
-							/>
-							<label htmlFor='starter' className='ml-2'>
-								Entry Level
-							</label>
-						</div>
-						<div className='my-1'>
-							<input
-								type='radio'
-								name='plan'
-								id='mid-level'
-								value={10}
-							/>
-							<label htmlFor='mid-level' className='ml-2'>
-								Mid Level
-							</label>
-						</div>
-					</div>
-					{error !== null && error.errorKey === 'employees' && (
-						<p className='text-red-600 text-sm'>
-							{error.errorDescription}
-						</p>
-					)}
+          <p className="block mt-4 mb-2">
+            Choose your plan <span className="text-red-600">*</span>
+          </p>
+          <div
+            className={`flex space-x-4 ${
+              error !== null &&
+              error.errorKey === "employees" &&
+              "border-red-600 border-2 rounded-md"
+            }`}
+            onChange={handleChange}
+          >
+            <div className="my-1">
+              <label htmlFor="starter" className="ml-2">
+                <input type="radio" name="plan" id="starter" value={5} />
+                Entry Level
+              </label>
+            </div>
+            <div className="my-1">
+              <label htmlFor="mid-level" className="ml-2">
+                <input type="radio" name="plan" id="mid-level" value={10} />
+                Mid Level
+              </label>
+            </div>
+          </div>
+          {error !== null && error.errorKey === "employees" && (
+            <p className="text-red-600 text-sm">{error.errorDescription}</p>
+          )}
 
-					<h3 className='font-bold text-lg mt-8'>
-						Admin User Information
-					</h3>
-					<InputElement
-						label='Email'
-						error={error}
-						inputName='email'
-						required={true}
-						onChange={handleChange}
-						inputType='email'
-						value={
-							'email' in registration ? registration.email : ''
-						}
-						enabled={true}
-					/>
-					<InputElement
-						label='Password'
-						error={error}
-						inputName='password'
-						required={true}
-						onChange={handleChange}
-						inputType='password'
-						value={
-							'password' in registration
-								? registration.password
-								: ''
-						}
-						enabled={true}
-					/>
-					<InputElement
-						label='Full name'
-						error={error}
-						inputName='fullname'
-						required={true}
-						onChange={handleChange}
-						inputType='text'
-						value={
-							'fullname' in registration
-								? registration.fullname
-								: ''
-						}
-						enabled={true}
-					/>
+          <h3 className="font-bold text-lg mt-8">Admin User Information</h3>
+          <InputElement
+            label="Email"
+            error={error}
+            inputName="email"
+            required
+            onChange={handleChange}
+            inputType="email"
+            value={"email" in registration ? registration.email : ""}
+            enabled
+          />
+          <InputElement
+            label="Password"
+            error={error}
+            inputName="password"
+            required
+            onChange={handleChange}
+            inputType="password"
+            value={"password" in registration ? registration.password : ""}
+            enabled
+          />
+          <InputElement
+            label="Full name"
+            error={error}
+            inputName="fullname"
+            required
+            onChange={handleChange}
+            inputType="text"
+            value={"fullname" in registration ? registration.fullname : ""}
+            enabled
+          />
 
-					<PrimaryButton
-						buttonType={'submit'}
-						text={'Submit'}
-						onEvent={handleSubmit}
-					/>
-					<SecondaryButton
-						buttonType='reset'
-						text='Reset'
-						onEvent={null}
-					/>
+          <PrimaryButton
+            buttonType="submit"
+            text="Submit"
+            onEvent={handleSubmit}
+          />
+          <SecondaryButton buttonType="reset" text="Reset" onEvent={null} />
 
-					<div className='text-sm mt-2'>
-						<span className='text-red-600'>*</span> Required field
-					</div>
-				</form>
-			</div>
+          <div className="text-sm mt-2">
+            <span className="text-red-600">*</span> Required field
+          </div>
+        </form>
+      </div>
 
-			<Footer />
-		</div>
-	);
-};
+      <Footer />
+    </div>
+  );
+}
 
-export { Register };
+export default Register;
 
 // "ruc": "12345678920",
 // "name": "Testing Company 2",
