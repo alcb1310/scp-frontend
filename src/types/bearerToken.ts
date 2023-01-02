@@ -1,4 +1,4 @@
-export type bearerToken = {
-    token: string;
-    type: string;
+export type BearerToken = {
+  token: string;
+  type: string;
 };

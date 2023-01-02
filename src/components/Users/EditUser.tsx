@@ -1,9 +1,3 @@
-const EditUser = () => {
-    return (
-        <>
-            <h1>Edit User</h1>
-        </>
-    )
+export default function EditUser() {
+  return <h1>Edit User</h1>;
 }
-
-export { EditUser }

@@ -1,4 +1,4 @@
-export type queryParamsType = {
-	key: string;
-	value: string | number;
+export type QueryParamsType = {
+  key: string;
+  value: string | number;
 };
