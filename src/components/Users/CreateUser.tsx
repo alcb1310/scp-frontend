@@ -13,6 +13,55 @@ type CreateUserType = {
   name: string;
 };
 
+function UserForm({
+  handleSubmit,
+  error,
+  handleChange,
+  user,
+}: {
+  handleSubmit: (event: FormEvent<HTMLFormElement>) => Promise<void>;
+  error: ErrorType | null;
+  handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  user: CreateUserType;
+}) {
+  return (
+    <form onSubmit={handleSubmit}>
+      <InputElement
+        label="Email"
+        error={error}
+        inputName="email"
+        required
+        inputType="email"
+        onChange={handleChange}
+        value={"email" in user ? user.email : ""}
+        enabled
+      />
+      <InputElement
+        label="Password"
+        error={error}
+        inputName="password"
+        required
+        inputType="password"
+        onChange={handleChange}
+        value={"password" in user ? user.password : ""}
+        enabled
+      />
+      <InputElement
+        label="Name"
+        error={error}
+        inputName="name"
+        required
+        inputType="text"
+        onChange={handleChange}
+        value={"name" in user ? user.name : ""}
+        enabled
+      />
+
+      <PrimaryButton buttonType="submit" text="Submit" onEvent={handleSubmit} />
+    </form>
+  );
+}
+
 export default function CreateUser(props: { successEvent: any }) {
   const [error, setError] = useState<ErrorType | null>(null);
   const [user, setUser] = useState<CreateUserType>({
@@ -60,45 +109,12 @@ export default function CreateUser(props: { successEvent: any }) {
       <h2 className="mt-4 text-lg uppercase font-semibold font-sans">
         Create User
       </h2>
-
-      <form onSubmit={handleSubmit}>
-        <InputElement
-          label="Email"
-          error={error}
-          inputName="email"
-          required
-          inputType="email"
-          onChange={handleChange}
-          value={"email" in user ? user.email : ""}
-          enabled
-        />
-        <InputElement
-          label="Password"
-          error={error}
-          inputName="password"
-          required
-          inputType="password"
-          onChange={handleChange}
-          value={"password" in user ? user.password : ""}
-          enabled
-        />
-        <InputElement
-          label="Name"
-          error={error}
-          inputName="name"
-          required
-          inputType="text"
-          onChange={handleChange}
-          value={"name" in user ? user.name : ""}
-          enabled
-        />
-
-        <PrimaryButton
-          buttonType="submit"
-          text="Submit"
-          onEvent={handleSubmit}
-        />
-      </form>
+      <UserForm
+        handleSubmit={handleSubmit}
+        error={error}
+        handleChange={handleChange}
+        user={user}
+      />
     </>
   );
 }
