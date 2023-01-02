@@ -1,4 +1,4 @@
-export type storeDataType = {
+export type StoreDataType = {
   token: string;
   type: string;
   uuid: string;

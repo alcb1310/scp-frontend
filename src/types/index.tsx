@@ -3,7 +3,7 @@ import { ButtonProps } from "./ButtonTypes";
 import { ErrorType } from "./ErrorType";
 import { RegistrationType } from "./RegistrationType";
 import { UserInputTypeProps, UserInputType } from "./InputTypeProps";
-import { storeDataType } from "./StoreDataType";
+import { StoreDataType } from "./StoreDataType";
 import { DisplayStatus as DisplayStatusType } from "./displayStatus";
 import { GetSuppliersType } from "./getSuppliersType";
 import { BudgetItemType, CreateBudgetItemType } from "./budgetItemType";
@@ -17,7 +17,7 @@ export type {
   RegistrationType,
   UserInputTypeProps,
   UserInputType,
-  storeDataType as StoreDataType,
+  StoreDataType,
   DisplayStatusType,
   GetSuppliersType,
   BudgetItemType,
