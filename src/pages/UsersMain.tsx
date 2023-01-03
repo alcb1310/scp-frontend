@@ -8,6 +8,7 @@ import PrimaryButton from "../components/Buttons/PrimaryButton";
 import Loading from "../components/Elements/Loading";
 import ChangePassword from "../components/Users/ChangePassword";
 import CreateUser from "../components/Users/CreateUser";
+import EditUser from "../components/Users/EditUser";
 
 type UserActivePageType = "create" | "update" | "reset" | null;
 type GetUserType = {
@@ -26,6 +27,7 @@ function UsersMain() {
   const [activePage, setActivePage] = useState<UserActivePageType>(null);
   const [users, setUsers] = useState<GetUserType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [selectedUserUuid, setSelectedUserUuid] = useState<string>("");
   const storeData = useSelector((state: any) => state);
 
   const getAllUsers = async (): Promise<AxiosResponse> => {
@@ -54,7 +56,14 @@ function UsersMain() {
 
   const usersEl = users.map((user: GetUserType) => {
     return (
-      <tr className="hover:bg-indigo-100" key={user.uuid}>
+      <tr
+        className="hover:bg-indigo-100"
+        key={user.uuid}
+        onClick={() => {
+          setActivePage("update");
+          setSelectedUserUuid(user.uuid);
+        }}
+      >
         <td className="border-x-2 p-3">{user.email}</td>
         <td className="border-x-2 p-3">{user.name}</td>
       </tr>
@@ -67,6 +76,8 @@ function UsersMain() {
     <ChangePassword />
   ) : activePage === "create" ? (
     <CreateUser successEvent={handleSuccess} />
+  ) : activePage === "update" ? (
+    <EditUser userUuid={selectedUserUuid} />
   ) : (
     <div className="w-full">
       <table className="mt-4 mx-auto">
@@ -99,11 +110,12 @@ function UsersMain() {
             setActivePage("create");
           }}
         />
+        <hr className="border-b-2 border-indigo-200 mt-5 mb-3" />
         <PrimaryButton
           buttonType="button"
-          text="Update User"
+          text="User home"
           onEvent={() => {
-            setActivePage("update");
+            setActivePage(null);
           }}
         />
       </aside>

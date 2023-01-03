@@ -10,7 +10,7 @@ import { BudgetItemType, CreateBudgetItemType } from "./budgetItemType";
 import { ProjectType } from "./projectType";
 import { BearerToken } from "./bearerToken";
 import { BudgetType, BudgetFormType } from "./budgetType";
-import { CreateUserType } from "./CreateUserType";
+import { CreateUserType, UpdateUserType } from "./UserTypes";
 
 export type {
   ButtonProps,
@@ -28,4 +28,5 @@ export type {
   BudgetFormType,
   BudgetType,
   CreateUserType,
+  UpdateUserType,
 };
