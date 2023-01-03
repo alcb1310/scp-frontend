@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable import/no-cycle */
 import axios, { AxiosResponse } from "axios";
 import { BearerToken } from "../types";
-import { SERVER } from "./connection";
+import { SERVER } from "../assets";
 
 export default async function postRequest(
   endPoint: string,

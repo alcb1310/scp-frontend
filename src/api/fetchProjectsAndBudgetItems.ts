@@ -1,13 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/no-cycle */
-import { StoreDataType } from "../types";
-import { getRequestWithQueryString } from "./connection";
+import { Dispatch, SetStateAction } from "react";
+import { BudgetItemType, ProjectType, StoreDataType } from "../types";
+import { getRequestWithQueryString } from "./getRequest";
 
 export default async function fetchProjectsAndBudgetItems(
   storeData: StoreDataType,
-  setIsLoading: any,
-  setProjects: any,
-  setBudgetItems: any
+  setIsLoading: Dispatch<SetStateAction<boolean>>,
+  setProjects: Dispatch<SetStateAction<ProjectType[]>>,
+  setBudgetItems: Dispatch<SetStateAction<BudgetItemType[]>>
 ): Promise<void> {
   setIsLoading(true);
   const [projectResponse, budgetItemResponse] = await Promise.all([

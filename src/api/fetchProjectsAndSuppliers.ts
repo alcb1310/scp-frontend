@@ -1,13 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/no-cycle */
+import { Dispatch, SetStateAction } from "react";
 import { getSuppliers, getRequestWithQueryString } from "./connection";
-import { StoreDataType } from "../types";
+import { GetSuppliersType, ProjectType, StoreDataType } from "../types";
 
 export default async function fetchProjectsAndSuppliers(
   storeData: StoreDataType,
-  setIsLoading: any,
-  setProjects: any,
-  setSuppliers: any
+  setIsLoading: Dispatch<SetStateAction<boolean>>,
+  setProjects: Dispatch<SetStateAction<ProjectType[]>>,
+  setSuppliers: Dispatch<SetStateAction<GetSuppliersType[]>>
 ): Promise<void> {
   setIsLoading(true);
 
